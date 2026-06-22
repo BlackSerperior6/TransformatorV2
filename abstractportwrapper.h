@@ -1,0 +1,34 @@
+#ifndef ABSTRACTPORTWRAPPER_H
+#define ABSTRACTPORTWRAPPER_H
+
+#include <QObject>
+
+class AbstractPortWrapper : public QObject
+{
+    Q_OBJECT
+
+public:
+    AbstractPortWrapper(QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
+
+    virtual ~AbstractPortWrapper();
+
+    virtual void Start() = 0;
+
+    virtual void Stop() = 0;
+
+protected:
+
+    virtual void Accept(const QByteArray& data);
+
+    void SendToTargetPort(const QByteArray& data);
+
+    AbstractPortWrapper* targetPort;
+    qint32 connectionId;
+
+signals:
+    void dataSend(const QByteArray &data);
+    void dataReceived(const QByteArray &data);
+    void errorOccurred(qint32 connectionId, const QString &error);
+};
+
+#endif // ABSTRACTPORTWRAPPER_H
