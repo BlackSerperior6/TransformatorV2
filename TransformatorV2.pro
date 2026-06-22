@@ -1,4 +1,5 @@
 QT       += core gui
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,12 +13,14 @@ SOURCES += \
     abstractportwrapper.cpp \
     main.cpp \
     mainwindow.cpp \
-    serialportwrapper.cpp
+    serialportwrapper.cpp \
+    tcpserverwrapper.cpp
 
 HEADERS += \
     abstractportwrapper.h \
     mainwindow.h \
-    serialportwrapper.h
+    serialportwrapper.h \
+    tcpserverwrapper.h
 
 FORMS += \
     mainwindow.ui

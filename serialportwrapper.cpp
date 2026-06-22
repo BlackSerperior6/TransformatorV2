@@ -4,6 +4,11 @@ SerialPortWrapper::SerialPortWrapper(const QString &portName, QObject *parent, i
     AbstractPortWrapper(parent, conId, target), serialPort(new QSerialPort(this)), _portName(portName), _baudRate(baudRate)
 {}
 
+SerialPortWrapper::~SerialPortWrapper()
+{
+    Stop();
+}
+
 void SerialPortWrapper::Start()
 {
     if (serialPort->isOpen())
@@ -66,4 +71,12 @@ void SerialPortWrapper::Accept(const QByteArray &data) //Without target port
         serialPort->flush();
         AbstractPortWrapper::Accept(data);
     }
+}
+
+void SerialPortWrapper::Stop()
+{
+    if (!serialPort->isOpen())
+        return;
+
+    serialPort->close();
 }

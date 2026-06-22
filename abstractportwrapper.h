@@ -17,13 +17,13 @@ public:
     virtual void Stop() = 0;
 
 protected:
-
-    virtual void Accept(const QByteArray& data);
-
     void SendToTargetPort(const QByteArray& data);
 
     AbstractPortWrapper* targetPort;
     qint32 connectionId;
+
+protected slots:
+    virtual void Accept(const QByteArray& data);
 
 signals:
     void dataSend(const QByteArray &data);

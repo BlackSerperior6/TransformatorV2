@@ -10,16 +10,19 @@ class SerialPortWrapper : public AbstractPortWrapper
 public:
     SerialPortWrapper(const QString &portName, QObject *parent, int conId, AbstractPortWrapper* target, qint32 baudRate = QSerialPort::Baud115200);
 
+    ~SerialPortWrapper();
+
     void Start() override;
 
-protected:
+    void Stop() override;
 
+protected:
     void Accept(const QByteArray &data) override;
 
-private:
-
+private slots:
     void OnReadReady();
 
+private:
     QSerialPort *serialPort;
     QByteArray readBuffer;
 
