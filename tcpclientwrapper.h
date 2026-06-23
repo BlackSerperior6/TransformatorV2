@@ -7,6 +7,8 @@
 
 class TcpClientWrapper : public AbstractPortWrapper
 {
+    Q_OBJECT
+
 public:
     TcpClientWrapper(QMap<QString, quint16>& listOfServers, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
 

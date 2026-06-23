@@ -185,7 +185,7 @@ PortsConnection* ConnectionEdit::CreateConnection()
 {
     AbstractPortWrapper* firstPort;
     AbstractPortWrapper* secondport;
-    PortsConnection* connection = new PortsConnection(firstPort, secondport, updatedConnectionCounter);
+    PortsConnection* connection = new PortsConnection(updatedConnectionCounter);
 
     switch (ui->ConTypeSelectionSecond->currentIndex())
     {
@@ -214,6 +214,8 @@ PortsConnection* ConnectionEdit::CreateConnection()
                 firstPort = new TcpServerWrapper(port, parsedIps, connection, updatedConnectionCounter, secondport);
             break;
     }
+
+    connection->SetPorts(firstPort, secondport);
 
     return connection;
 }

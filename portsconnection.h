@@ -9,8 +9,12 @@
 
 class PortsConnection : public QWidget
 {
+    Q_OBJECT
+
 public:
-    PortsConnection(AbstractPortWrapper* portOne, AbstractPortWrapper* portTwo, quint32 conId);
+    PortsConnection(quint32 conId);
+
+    void SetPorts(AbstractPortWrapper* first, AbstractPortWrapper* second);
 
     AbstractPortWrapper* firstPort;
     AbstractPortWrapper* secondPort;

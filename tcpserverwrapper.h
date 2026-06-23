@@ -10,6 +10,8 @@
 
 class TcpServerWrapper : public AbstractPortWrapper
 {
+    Q_OBJECT
+
 public:
     TcpServerWrapper(quint16 networkPort, QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
 

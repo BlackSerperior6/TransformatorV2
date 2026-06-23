@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>591</width>
     <height>600</height>
    </rect>
   </property>
@@ -42,7 +42,7 @@
     <widget class="QPushButton" name="RemoveConnection">
      <property name="geometry">
       <rect>
-       <x>280</x>
+       <x>260</x>
        <y>20</y>
        <width>131</width>
        <height>41</height>
@@ -55,7 +55,7 @@
     <widget class="QPushButton" name="ClearErrorLogs">
      <property name="geometry">
       <rect>
-       <x>510</x>
+       <x>450</x>
        <y>20</y>
        <width>131</width>
        <height>41</height>
@@ -86,36 +86,13 @@
      </rect>
     </property>
    </widget>
-   <widget class="QListView" name="DataLogs">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>80</y>
-      <width>221</width>
-      <height>371</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="UpdateDataLogs">
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>490</y>
-      <width>141</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Обновить</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>591</width>
      <height>21</height>
     </rect>
    </property>

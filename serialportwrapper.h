@@ -7,6 +7,8 @@
 
 class SerialPortWrapper : public AbstractPortWrapper
 {
+    Q_OBJECT
+
 public:
     SerialPortWrapper(const QString &portName, QObject *parent, int conId, AbstractPortWrapper* target, qint32 baudRate = QSerialPort::Baud115200);
 

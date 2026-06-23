@@ -1,8 +1,13 @@
 #include "portsconnection.h"
 
-PortsConnection::PortsConnection(AbstractPortWrapper* portOne, AbstractPortWrapper* portTwo, quint32 conId) :
-    firstPort(portOne), secondPort(portTwo), connectionId(conId)
+PortsConnection::PortsConnection(quint32 conId) : connectionId(conId)
 {}
+
+void PortsConnection::SetPorts(AbstractPortWrapper *first, AbstractPortWrapper *second)
+{
+    firstPort = first;
+    secondPort = second;
+}
 
 void PortsConnection::onDataPassing(const QByteArray& data)
 {
