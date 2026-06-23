@@ -16,6 +16,8 @@ public:
 
     void Stop() override;
 
+    QString GetPortName();
+
 protected slots:
     void Accept(const QByteArray &data) override;
 

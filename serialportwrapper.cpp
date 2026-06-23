@@ -1,7 +1,7 @@
 #include "serialportwrapper.h"
 
 SerialPortWrapper::SerialPortWrapper(const QString &portName, QObject *parent, int conId, AbstractPortWrapper* target, qint32 baudRate) :
-    AbstractPortWrapper(parent, conId, target), serialPort(new QSerialPort(this)), _portName(portName), _baudRate(baudRate)
+    AbstractPortWrapper(parent, conId, PortType::SerialPort, target), serialPort(new QSerialPort(this)), _portName(portName), _baudRate(baudRate)
 {}
 
 SerialPortWrapper::~SerialPortWrapper()
@@ -79,4 +79,9 @@ void SerialPortWrapper::Stop()
         return;
 
     serialPort->close();
+}
+
+QString SerialPortWrapper::GetPortName()
+{
+    return serialPort->portName();
 }

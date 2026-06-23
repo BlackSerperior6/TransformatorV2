@@ -19,6 +19,10 @@ public:
 
     void Stop() override;
 
+    quint16 GetNetworkPort();
+
+    QSet<QString> GetAllowedIps();
+
 protected slots:
     void Accept(const QByteArray &data) override;
 

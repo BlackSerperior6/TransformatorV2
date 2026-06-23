@@ -16,6 +16,8 @@ public:
 
     void Stop() override;
 
+    QMap<QString, quint16> GetListOfServers();
+
 protected slots:
     void Accept(const QByteArray &data) override;
 

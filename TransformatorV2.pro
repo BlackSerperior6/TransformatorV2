@@ -11,20 +11,26 @@ CONFIG += c++11
 
 SOURCES += \
     abstractportwrapper.cpp \
+    connectionedit.cpp \
     main.cpp \
     mainwindow.cpp \
+    portsconnection.cpp \
     serialportwrapper.cpp \
     tcpclientwrapper.cpp \
     tcpserverwrapper.cpp
 
 HEADERS += \
     abstractportwrapper.h \
+    connectionedit.h \
     mainwindow.h \
+    portsconnection.h \
+    porttype.h \
     serialportwrapper.h \
     tcpclientwrapper.h \
     tcpserverwrapper.h
 
 FORMS += \
+    connectionedit.ui \
     mainwindow.ui
 
 # Default rules for deployment.

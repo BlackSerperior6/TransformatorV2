@@ -1,7 +1,7 @@
 #include "abstractportwrapper.h"
 
-AbstractPortWrapper::AbstractPortWrapper(QObject *parent, qint32 conId, AbstractPortWrapper* target) :
-    QObject(parent),targetPort(target), connectionId(conId)
+AbstractPortWrapper::AbstractPortWrapper(QObject *parent, qint32 conId, PortType portType, AbstractPortWrapper* target) :
+    QObject(parent), targetPort(target), connectionId(conId), _portType(portType)
 {
     disconnect(this, &AbstractPortWrapper::dataSend, nullptr, nullptr);
 
@@ -18,6 +18,11 @@ void AbstractPortWrapper::Accept(const QByteArray &data)
         return;
 
     emit dataReceived(data);
+}
+
+PortType AbstractPortWrapper::GetPortType()
+{
+    return _portType;
 }
 
 void AbstractPortWrapper::SendToTargetPort(const QByteArray &data)

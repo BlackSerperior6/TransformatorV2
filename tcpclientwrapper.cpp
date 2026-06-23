@@ -1,7 +1,7 @@
 #include "tcpclientwrapper.h"
 
 TcpClientWrapper::TcpClientWrapper(QMap<QString, quint16>& listOfServers, QObject *parent, qint32 conId, AbstractPortWrapper* target)
-    : AbstractPortWrapper(parent, conId, target)
+    : AbstractPortWrapper(parent, conId, PortType::TcpPort, target)
 {
     for (QMap<QString, quint16>::iterator it = listOfServers.begin();
             it != listOfServers.end(); ++it)
@@ -47,6 +47,11 @@ void TcpClientWrapper::Stop()
     hostConnections.clear();
 }
 
+QMap<QString, quint16> TcpClientWrapper::GetListOfServers()
+{
+    return _listOfServers;
+}
+
 void TcpClientWrapper::Accept(const QByteArray &data)
 {
     AbstractPortWrapper::Accept(data);
@@ -56,9 +61,12 @@ void TcpClientWrapper::Accept(const QByteArray &data)
         qint64 writtenData = connection->write(data);
 
         if (writtenData < 0)
-            emit errorOccurred(connectionId, "Failed to write data to a server");
-
-        connection->flush();
+        {
+            QString errorMsg = connection->errorString();
+            emit errorOccurred(connectionId, QString("Failed to write data to a server: %1").arg(errorMsg));
+        }
+        else
+            connection->flush();
     }
 }
 

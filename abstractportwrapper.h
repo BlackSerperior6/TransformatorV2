@@ -1,6 +1,7 @@
 #ifndef ABSTRACTPORTWRAPPER_H
 #define ABSTRACTPORTWRAPPER_H
 
+#include "porttype.h"
 #include <QObject>
 
 class AbstractPortWrapper : public QObject
@@ -8,7 +9,7 @@ class AbstractPortWrapper : public QObject
     Q_OBJECT
 
 public:
-    AbstractPortWrapper(QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
+    AbstractPortWrapper(QObject *parent, qint32 conId, PortType portType, AbstractPortWrapper* target = nullptr);
 
     virtual ~AbstractPortWrapper();
 
@@ -16,11 +17,16 @@ public:
 
     virtual void Stop() = 0;
 
+    PortType GetPortType();
+
 protected:
     void SendToTargetPort(const QByteArray& data);
 
     AbstractPortWrapper* targetPort;
     qint32 connectionId;
+
+private:
+    PortType _portType;
 
 protected slots:
     virtual void Accept(const QByteArray& data);

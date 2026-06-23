@@ -1,7 +1,7 @@
 #include "tcpserverwrapper.h"
 
 TcpServerWrapper::TcpServerWrapper(quint16 networkPort, QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target)
-    : AbstractPortWrapper(parent, conId, target), _networkPort(networkPort), server(new QTcpServer(this))
+    : AbstractPortWrapper(parent, conId, PortType::TcpPort, target), _networkPort(networkPort), server(new QTcpServer(this))
 {
     SetAllowedIps(allowedIps);
 
@@ -44,6 +44,16 @@ void TcpServerWrapper::Stop()
 
     if (server->isListening())
         server->close();
+}
+
+quint16 TcpServerWrapper::GetNetworkPort()
+{
+    return server->serverPort();
+}
+
+QSet<QString> TcpServerWrapper::GetAllowedIps()
+{
+    return _allowedIps;
 }
 
 void TcpServerWrapper::onReadyRead()
