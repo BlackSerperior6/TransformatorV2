@@ -20,14 +20,21 @@ class ConnectionEdit : public QDialog
 public:
     explicit ConnectionEdit(QWidget *parent = nullptr,
                             PortsConnection* connection = nullptr,
-                            quint32 connectionCounter = 0);
+                            qint32 connectionCounter = 0);
     ~ConnectionEdit();
 
     PortsConnection* portsConnection;
 
-    quint32 updatedConnectionCounter;
+    qint32 updatedConnectionCounter;
 
     bool addedAConnection;
+
+private slots:
+    void on_ConTypeSelectionFirst_currentIndexChanged(int index);
+
+    void on_ConTypeSelectionSecond_currentIndexChanged(int index);
+
+    void on_SaveConnectionButton_clicked();
 
 private:
     Ui::ConnectionEdit *ui;

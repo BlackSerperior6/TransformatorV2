@@ -10,7 +10,7 @@
 class PortsConnection : public QWidget
 {
 public:
-    PortsConnection(AbstractPortWrapper* portOne, AbstractPortWrapper* portTwo);
+    PortsConnection(AbstractPortWrapper* portOne, AbstractPortWrapper* portTwo, quint32 conId);
 
     AbstractPortWrapper* firstPort;
     AbstractPortWrapper* secondPort;

@@ -3,7 +3,7 @@
 
 ConnectionEdit::ConnectionEdit(QWidget *parent,
                                PortsConnection* connection,
-                               quint32 connectionCounter) :
+                               qint32 connectionCounter) :
     QDialog(parent), portsConnection(connection), updatedConnectionCounter(connectionCounter), addedAConnection(false), ui(new Ui::ConnectionEdit)
 {
     ui->setupUi(this);
@@ -74,8 +74,6 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
     {
         ui->IPEdit2->setVisible(false);
         ui->IPLabel2->setVisible(false);
-        ui->NetLabel2->setVisible(false);
-        ui->NETPortEdit2->setVisible(false);
 
         ui->COMEdit2->setVisible(true);
         ui->ComLabel2->setVisible(true);
@@ -93,8 +91,6 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
 
         ui->IPEdit2->setVisible(true);
         ui->IPLabel2->setVisible(true);
-        ui->NetLabel2->setVisible(true);
-        ui->NETPortEdit2->setVisible(true);
 
         ui->ConTypeSelectionSecond->setCurrentIndex(1);
 
@@ -121,4 +117,97 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
 ConnectionEdit::~ConnectionEdit()
 {
     delete ui;
+}
+
+void ConnectionEdit::on_ConTypeSelectionFirst_currentIndexChanged(int index)
+{
+    switch (index)
+    {
+        case 0: // COM port selected
+            ui->IPEdit1->setVisible(false);
+            ui->IPLabel1->setVisible(false);
+            ui->NetLabel1->setVisible(false);
+            ui->NETPortEdit1->setVisible(false);
+
+            ui->COMEdit1->setVisible(true);
+            ui->ComLabel1->setVisible(true);
+            break;
+
+        case 1: // TCP port selected
+            ui->COMEdit1->setVisible(false);
+            ui->ComLabel1->setVisible(false);
+
+            ui->IPEdit1->setVisible(true);
+            ui->IPLabel1->setVisible(true);
+            ui->NetLabel1->setVisible(true);
+            ui->NETPortEdit1->setVisible(true);
+            break;
+    }
+}
+
+void ConnectionEdit::on_ConTypeSelectionSecond_currentIndexChanged(int index)
+{
+    switch (index)
+    {
+        case 0: // COM port selected
+            ui->IPEdit2->setVisible(false);
+            ui->IPLabel2->setVisible(false);
+
+            ui->COMEdit2->setVisible(true);
+            ui->ComLabel2->setVisible(true);
+            break;
+
+        case 1: // TCP port selected
+            ui->COMEdit2->setVisible(false);
+            ui->ComLabel2->setVisible(false);
+
+            ui->IPEdit2->setVisible(true);
+            ui->IPLabel2->setVisible(true);
+            break;
+    }
+}
+
+void ConnectionEdit::on_SaveConnectionButton_clicked()
+{
+    if (portsConnection != nullptr)
+        delete portsConnection;
+    else
+        updatedConnectionCounter++;
+
+    addedAConnection = true;
+
+    portsConnection = CreateConnection();
+
+    close();
+}
+
+PortsConnection* ConnectionEdit::CreateConnection()
+{
+    AbstractPortWrapper* firstPort;
+    AbstractPortWrapper* secondport;
+    PortsConnection* connection = new PortsConnection(firstPort, secondport, updatedConnectionCounter);
+
+    switch (ui->ConTypeSelectionSecond->currentIndex())
+    {
+        case 0: // Must make a COM port
+            secondport = new SerialPortWrapper(ui->COMEdit2->text(), connection, updatedConnectionCounter, nullptr);
+            break;
+        case 1: // Must make a TCP client
+            QMap<QString, quint16> parsedIps = ParseIpInputWithPort(ui->IPEdit2);
+            secondport = new TcpClientWrapper(parsedIps, connection, updatedConnectionCounter, nullptr);
+            break;
+    }
+
+    switch (ui->ConTypeSelectionFirst->currentIndex())
+    {
+        case 0: // Must make a COM port
+            firstPort = new SerialPortWrapper(ui->COMEdit1->text(), connection, updatedConnectionCounter, secondport);
+            break;
+        case 1: // Must make a TCP server
+            QSet<QString> parsedIps;
+            firstPort = new TcpServerWrapper(ui->NETPortEdit1->text().toUShort(), parsedIps, connection, updatedConnectionCounter, secondport);
+            break;
+    }
+
+    return connection;
 }
