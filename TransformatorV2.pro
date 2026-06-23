@@ -14,12 +14,14 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     serialportwrapper.cpp \
+    tcpclientwrapper.cpp \
     tcpserverwrapper.cpp
 
 HEADERS += \
     abstractportwrapper.h \
     mainwindow.h \
     serialportwrapper.h \
+    tcpclientwrapper.h \
     tcpserverwrapper.h
 
 FORMS += \

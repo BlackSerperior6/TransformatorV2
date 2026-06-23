@@ -43,12 +43,12 @@ void SerialPortWrapper::OnReadReady() //With target port
     {
         QString error = QString("Target port is null, yet OnReadReady event is subscribed!");
         emit errorOccurred(connectionId, error);
+        return;
     }
 
     QByteArray data = serialPort->readAll();
 
-    if (!data.isEmpty())
-        SendToTargetPort(data);
+    SendToTargetPort(data);
 }
 
 void SerialPortWrapper::Accept(const QByteArray &data) //Without target port

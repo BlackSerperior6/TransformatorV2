@@ -16,7 +16,7 @@ public:
 
     void Stop() override;
 
-protected:
+protected slots:
     void Accept(const QByteArray &data) override;
 
 private slots:
@@ -24,7 +24,6 @@ private slots:
 
 private:
     QSerialPort *serialPort;
-    QByteArray readBuffer;
 
     QString _portName;
     qint32 _baudRate;

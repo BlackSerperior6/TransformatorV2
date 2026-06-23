@@ -12,6 +12,11 @@ TcpServerWrapper::TcpServerWrapper(quint16 networkPort, QSet<QString> allowedIps
         emit errorOccurred(connectionId, QString("TCP server must have a target port!"));
 }
 
+TcpServerWrapper::~TcpServerWrapper()
+{
+    Stop();
+}
+
 void TcpServerWrapper::Start()
 {
     if (server->isListening())
@@ -40,6 +45,69 @@ void TcpServerWrapper::Stop()
     if (server->isListening())
         server->close();
 }
+
+void TcpServerWrapper::onReadyRead()
+{
+    QTcpSocket *client = qobject_cast<QTcpSocket*>(sender());
+
+    if (!client)
+        return;
+
+    QByteArray data = client->readAll();
+
+    SendToTargetPort(data);
+}
+
+void TcpServerWrapper::onNewConnection()
+{
+    while (server->hasPendingConnections())
+    {
+        QTcpSocket *client = server->nextPendingConnection();
+        QHostAddress clientIp = client->peerAddress();
+
+        if (!IsIpWhitelisted(clientIp))
+        {
+            client->close();
+            client->deleteLater();
+            continue;
+        }
+
+        connectedClients.append(client);
+
+        connect(client, &QTcpSocket::readyRead,
+                this, &TcpServerWrapper::onReadyRead);
+        connect(client, &QTcpSocket::disconnected,
+                this, &TcpServerWrapper::onClientDisconnected);
+        connect(client, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::error),
+                this, &TcpServerWrapper::onTcpSocketError);
+    }
+}
+
+void TcpServerWrapper::onClientDisconnected()
+{
+    QTcpSocket *client = qobject_cast<QTcpSocket*>(sender());
+
+    if (!client)
+        return;
+
+    QHostAddress clientIp = client->peerAddress();
+
+    connectedClients.removeAll(client);
+    client->deleteLater();
+}
+
+void TcpServerWrapper::onTcpSocketError(QAbstractSocket::SocketError socketError)
+{
+    QTcpSocket *client = qobject_cast<QTcpSocket*>(sender());
+
+    if (!client)
+        return;
+
+    QString errorMsg = client->errorString();
+
+    emit errorOccurred(connectionId, errorMsg);
+}
+
 
 void TcpServerWrapper::SetAllowedIps(QSet<QString>& allowedIps)
 {
@@ -74,4 +142,9 @@ bool TcpServerWrapper::IsIpWhitelisted(const QHostAddress &ip) const
     }
 
     return _allowedIps.contains(ipString);
+}
+
+void TcpServerWrapper::Accept(const QByteArray &data)
+{
+    emit errorOccurred(connectionId, QString("Accept slot triggered in a server wrapper!"));
 }
