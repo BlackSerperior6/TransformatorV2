@@ -41,7 +41,7 @@ private:
 
     PortsConnection* CreateConnection();
 
-    QList<QString> ParseIpInput(QPlainTextEdit* plainText);
+    QSet<QString> ParseIpInput(QPlainTextEdit* plainText);
 
     QMap<QString, quint16> ParseIpInputWithPort(QPlainTextEdit* plainText);
 };

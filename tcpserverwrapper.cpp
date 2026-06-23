@@ -1,7 +1,22 @@
 #include "tcpserverwrapper.h"
 
 TcpServerWrapper::TcpServerWrapper(quint16 networkPort, QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target)
-    : AbstractPortWrapper(parent, conId, PortType::TcpPort, target), _networkPort(networkPort), server(new QTcpServer(this))
+    : AbstractPortWrapper(parent, conId, PortType::TcpPort, target), _networkPort(networkPort), shouldSetNetworkPortAutomatically(false),
+      server(new QTcpServer(this))
+
+{
+    SetAllowedIps(allowedIps);
+
+    connect(server, &QTcpServer::newConnection,
+                this, &TcpServerWrapper::onNewConnection);
+
+    if (targetPort == nullptr)
+        emit errorOccurred(connectionId, QString("TCP server must have a target port!"));
+}
+
+TcpServerWrapper::TcpServerWrapper(QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper *target)
+    : AbstractPortWrapper(parent, conId, PortType::TcpPort, target),
+      shouldSetNetworkPortAutomatically(true), server(new QTcpServer(this))
 {
     SetAllowedIps(allowedIps);
 
@@ -25,11 +40,22 @@ void TcpServerWrapper::Start()
         return;
     }
 
-    if (!server->listen(QHostAddress::Any, _networkPort))
+    if (!shouldSetNetworkPortAutomatically)
     {
-       emit errorOccurred(connectionId, QString("Error on starting listening server: %1").arg(server->errorString()));
-       return;
-   }
+        if (!server->listen(QHostAddress::Any, _networkPort))
+        {
+           emit errorOccurred(connectionId, QString("Error on starting listening server: %1").arg(server->errorString()));
+           return;
+        }
+    }
+    else
+    {
+        if (!server->listen(QHostAddress::Any))
+        {
+           emit errorOccurred(connectionId, QString("Error on starting listening server: %1").arg(server->errorString()));
+           return;
+        }
+    }
 }
 
 void TcpServerWrapper::Stop()

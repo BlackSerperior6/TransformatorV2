@@ -13,6 +13,8 @@ class TcpServerWrapper : public AbstractPortWrapper
 public:
     TcpServerWrapper(quint16 networkPort, QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
 
+    TcpServerWrapper(QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
+
     ~TcpServerWrapper();
 
     void Start() override;
@@ -38,6 +40,7 @@ private:
     bool IsIpWhitelisted(const QHostAddress &ip) const;
 
     quint16 _networkPort;
+    bool shouldSetNetworkPortAutomatically;
     QSet<QString> _allowedIps;
     QList<QTcpSocket*> connectedClients;
 

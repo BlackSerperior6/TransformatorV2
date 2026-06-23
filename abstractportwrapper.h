@@ -19,14 +19,14 @@ public:
 
     PortType GetPortType();
 
+private:
+    PortType _portType;
+
 protected:
     void SendToTargetPort(const QByteArray& data);
 
     AbstractPortWrapper* targetPort;
     qint32 connectionId;
-
-private:
-    PortType _portType;
 
 protected slots:
     virtual void Accept(const QByteArray& data);

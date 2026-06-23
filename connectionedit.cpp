@@ -204,10 +204,64 @@ PortsConnection* ConnectionEdit::CreateConnection()
             firstPort = new SerialPortWrapper(ui->COMEdit1->text(), connection, updatedConnectionCounter, secondport);
             break;
         case 1: // Must make a TCP server
-            QSet<QString> parsedIps;
-            firstPort = new TcpServerWrapper(ui->NETPortEdit1->text().toUShort(), parsedIps, connection, updatedConnectionCounter, secondport);
+            bool isPortValid = false;
+            quint16 port = ui->NETPortEdit1->text().toUShort(&isPortValid);
+            QSet<QString> parsedIps = ParseIpInput(ui->IPEdit1);
+
+            if (!isPortValid)
+                firstPort = new TcpServerWrapper(parsedIps, connection, updatedConnectionCounter, secondport);
+            else
+                firstPort = new TcpServerWrapper(port, parsedIps, connection, updatedConnectionCounter, secondport);
             break;
     }
 
     return connection;
+}
+
+QSet<QString> ConnectionEdit::ParseIpInput(QPlainTextEdit *plainText)
+{
+    QSet<QString> result;
+
+    QString text = plainText->toPlainText();
+
+    QStringList lines = text.split('\n');
+
+    for (const QString& line : lines)
+    {
+        QString pureLine = line.trimmed();
+
+        result.insert(pureLine);
+    }
+
+    return result;
+}
+
+QMap<QString, quint16> ConnectionEdit::ParseIpInputWithPort(QPlainTextEdit *plainText)
+{
+    QMap<QString, quint16> result;
+
+    QString text = plainText->toPlainText();
+
+    QStringList lines = text.split('\n');
+
+    for (const QString& line : lines)
+    {
+        QString pureLine = line.trimmed();
+
+        QStringList parts = line.split(':');
+
+        if (parts.count() != 2)
+            continue;
+
+        bool canPortBeParsed = false;
+
+        quint16 parsedPort = parts[1].toUShort(&canPortBeParsed);
+
+        if (!canPortBeParsed)
+            continue;
+
+        result.insert(parts[0], parsedPort);
+    }
+
+    return result;
 }
