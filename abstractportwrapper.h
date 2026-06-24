@@ -3,6 +3,7 @@
 
 #include "porttype.h"
 #include <QObject>
+#include <QDebug>
 
 class AbstractPortWrapper : public QObject
 {

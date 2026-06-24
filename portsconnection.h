@@ -12,9 +12,11 @@ class PortsConnection : public QWidget
     Q_OBJECT
 
 public:
-    PortsConnection(quint32 conId);
+    PortsConnection(quint32 conId, QString logFilePath);
 
     void SetPorts(AbstractPortWrapper* first, AbstractPortWrapper* second);
+
+    QString GetFilePath();
 
     AbstractPortWrapper* firstPort;
     AbstractPortWrapper* secondPort;

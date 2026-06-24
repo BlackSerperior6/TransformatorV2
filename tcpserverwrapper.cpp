@@ -42,7 +42,7 @@ void TcpServerWrapper::Start()
 
     if (!shouldSetNetworkPortAutomatically)
     {
-        if (!server->listen(QHostAddress::Any, _networkPort))
+        if (!server->listen(QHostAddress::AnyIPv4, _networkPort))
         {
            emit errorOccurred(connectionId, QString("Error on starting listening server: %1").arg(server->errorString()));
            return;
@@ -84,6 +84,8 @@ QSet<QString> TcpServerWrapper::GetAllowedIps()
 
 void TcpServerWrapper::onReadyRead()
 {
+    qDebug() << "Read ready triggered!";
+
     QTcpSocket *client = qobject_cast<QTcpSocket*>(sender());
 
     if (!client)
@@ -96,6 +98,8 @@ void TcpServerWrapper::onReadyRead()
 
 void TcpServerWrapper::onNewConnection()
 {
+    qDebug() << "New Connection Triggered";
+
     while (server->hasPendingConnections())
     {
         QTcpSocket *client = server->nextPendingConnection();
@@ -103,6 +107,8 @@ void TcpServerWrapper::onNewConnection()
 
         if (!IsIpWhitelisted(clientIp))
         {
+            qDebug() << "New Connection Triggered: ip found to be not whitelisted!";
+
             client->close();
             client->deleteLater();
             continue;
@@ -121,6 +127,8 @@ void TcpServerWrapper::onNewConnection()
 
 void TcpServerWrapper::onClientDisconnected()
 {
+    qDebug() << "Client disconnected triggered!";
+
     QTcpSocket *client = qobject_cast<QTcpSocket*>(sender());
 
     if (!client)
@@ -134,6 +142,8 @@ void TcpServerWrapper::onClientDisconnected()
 
 void TcpServerWrapper::onTcpSocketError(QAbstractSocket::SocketError socketError)
 {
+    qDebug() << "TCP Socket Error triggered!";
+
     QTcpSocket *client = qobject_cast<QTcpSocket*>(sender());
 
     if (!client)
@@ -170,12 +180,7 @@ bool TcpServerWrapper::IsIpWhitelisted(const QHostAddress &ip) const
 
     QString ipString = ip.toString();
 
-    if (ipString == "::1")
-        ipString = "127.0.0.1";
-
-    if (ipString.startsWith("[") && ipString.contains("]:")) {
-        ipString = ipString.mid(1, ipString.indexOf("]:") - 1);
-    }
+    qDebug() << "Checked ip string: " + ipString;
 
     return _allowedIps.contains(ipString);
 }

@@ -2,6 +2,7 @@
 #define CONNECTIONEDIT_H
 
 #include <QDialog>
+#include <QFileDialog>
 #include <QPlainTextEdit>
 #include "porttype.h"
 #include "portsconnection.h"
@@ -25,6 +26,8 @@ public:
 
     PortsConnection* portsConnection;
 
+    QString logFilePath;
+
     qint32 updatedConnectionCounter;
 
     bool addedAConnection;
@@ -35,6 +38,8 @@ private slots:
     void on_ConTypeSelectionSecond_currentIndexChanged(int index);
 
     void on_SaveConnectionButton_clicked();
+
+    void on_viewButton_clicked();
 
 private:
     Ui::ConnectionEdit *ui;

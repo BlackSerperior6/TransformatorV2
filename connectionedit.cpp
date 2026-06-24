@@ -24,7 +24,11 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
     {
         portOneType = portsConnection->firstPort->GetPortType();
         portTwoType = portsConnection->secondPort->GetPortType();
+
+        logFilePath = portsConnection->GetFilePath();
     }
+
+    ui->logFileEdit->setText(logFilePath);
 
     if (portOneType == PortType::SerialPort)
     {
@@ -81,7 +85,7 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
         if (isConnectionPresent)
         {
             SerialPortWrapper* portTwo = (SerialPortWrapper*) portsConnection->secondPort;
-            ui->COMEdit1->setText(portTwo->GetPortName());
+            ui->COMEdit2->setText(portTwo->GetPortName());
         }
     }
     else if (portTwoType == PortType::TcpPort)
@@ -176,6 +180,8 @@ void ConnectionEdit::on_SaveConnectionButton_clicked()
 
     addedAConnection = true;
 
+    logFilePath = ui->logFileEdit->text();
+
     portsConnection = CreateConnection();
 
     close();
@@ -185,7 +191,7 @@ PortsConnection* ConnectionEdit::CreateConnection()
 {
     AbstractPortWrapper* firstPort;
     AbstractPortWrapper* secondport;
-    PortsConnection* connection = new PortsConnection(updatedConnectionCounter);
+    PortsConnection* connection = new PortsConnection(updatedConnectionCounter, logFilePath);
 
     switch (ui->ConTypeSelectionSecond->currentIndex())
     {
@@ -266,4 +272,16 @@ QMap<QString, quint16> ConnectionEdit::ParseIpInputWithPort(QPlainTextEdit *plai
     }
 
     return result;
+}
+
+void ConnectionEdit::on_viewButton_clicked()
+{
+    QString filePath = QFileDialog::getOpenFileName(
+        this,
+        tr("Файл логов."),
+        QDir::homePath(),
+        tr("All Files (*.*)")
+    );
+
+    ui->logFileEdit->setText(filePath);
 }

@@ -1,12 +1,17 @@
 #include "portsconnection.h"
 
-PortsConnection::PortsConnection(quint32 conId) : connectionId(conId)
+PortsConnection::PortsConnection(quint32 conId, QString logFilePath) : filePath(logFilePath), connectionId(conId)
 {}
 
 void PortsConnection::SetPorts(AbstractPortWrapper *first, AbstractPortWrapper *second)
 {
     firstPort = first;
     secondPort = second;
+}
+
+QString PortsConnection::GetFilePath()
+{
+    return filePath;
 }
 
 void PortsConnection::onDataPassing(const QByteArray& data)

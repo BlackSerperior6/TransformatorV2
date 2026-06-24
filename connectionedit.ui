@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>651</width>
-    <height>237</height>
+    <height>290</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,7 +98,7 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>180</y>
+     <y>220</y>
      <width>181</width>
      <height>41</height>
     </rect>
@@ -197,6 +197,42 @@
      <width>161</width>
      <height>20</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pathLabel">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>190</y>
+     <width>191</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Путь к файлу лога передачи канала:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="logFileEdit">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>190</y>
+     <width>251</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="viewButton">
+   <property name="geometry">
+    <rect>
+     <x>500</x>
+     <y>190</y>
+     <width>31</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
    </property>
   </widget>
  </widget>
