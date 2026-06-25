@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>591</width>
-    <height>600</height>
+    <width>582</width>
+    <height>604</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>582</width>
+    <height>604</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>582</width>
+    <height>604</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -29,7 +41,7 @@
     <widget class="QPushButton" name="CreateConnection">
      <property name="geometry">
       <rect>
-       <x>50</x>
+       <x>30</x>
        <y>20</y>
        <width>141</width>
        <height>41</height>
@@ -42,7 +54,7 @@
     <widget class="QPushButton" name="RemoveConnection">
      <property name="geometry">
       <rect>
-       <x>260</x>
+       <x>240</x>
        <y>20</y>
        <width>131</width>
        <height>41</height>
@@ -55,7 +67,7 @@
     <widget class="QPushButton" name="ClearErrorLogs">
      <property name="geometry">
       <rect>
-       <x>450</x>
+       <x>430</x>
        <y>20</y>
        <width>131</width>
        <height>41</height>
@@ -92,7 +104,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>591</width>
+     <width>582</width>
      <height>21</height>
     </rect>
    </property>
