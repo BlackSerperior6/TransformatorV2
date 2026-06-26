@@ -6,17 +6,11 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>582</width>
+    <width>781</width>
     <height>604</height>
    </rect>
   </property>
   <property name="minimumSize">
-   <size>
-    <width>582</width>
-    <height>604</height>
-   </size>
-  </property>
-  <property name="maximumSize">
    <size>
     <width>582</width>
     <height>604</height>
@@ -98,13 +92,39 @@
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="SaveButton">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>130</y>
+      <width>151</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Сохранить подключения</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="LoadButton">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>300</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Загрузить подключения</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>582</width>
+     <width>781</width>
      <height>21</height>
     </rect>
    </property>
