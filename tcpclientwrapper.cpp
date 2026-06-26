@@ -67,9 +67,6 @@ QJsonObject TcpClientWrapper::ToJson() const
 
 bool TcpClientWrapper::FromJson(const QJsonObject &obj)
 {
-    if (!AbstractPortWrapper::FromJson(obj))
-        return false;
-
     if (!obj.contains("serverList"))
         return false;
 
@@ -79,6 +76,11 @@ bool TcpClientWrapper::FromJson(const QJsonObject &obj)
         _listOfServers[it.key()] = it.value().toInt();
 
     return true;
+}
+
+QString TcpClientWrapper::GetTypeName() const
+{
+    return "TcpClientWrapper";
 }
 
 QMap<QString, quint16> TcpClientWrapper::GetListOfServers()

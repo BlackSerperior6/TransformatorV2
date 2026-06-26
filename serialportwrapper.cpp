@@ -39,7 +39,7 @@ void SerialPortWrapper::Start()
         emit errorOccurred(connectionId, error);
     }
 
-    if (targetPort == nullptr)
+    if (_targetPort == nullptr)
         return;
 
     connect(serialPort, &QSerialPort::readyRead,
@@ -48,7 +48,7 @@ void SerialPortWrapper::Start()
 
 void SerialPortWrapper::OnReadReady() //With target port
 {
-    if (targetPort == nullptr)
+    if (_targetPort == nullptr)
     {
         QString error = QString("Target port is null, yet OnReadReady event is subscribed!");
         emit errorOccurred(connectionId, error);
@@ -100,9 +100,6 @@ QJsonObject SerialPortWrapper::ToJson() const
 
 bool SerialPortWrapper::FromJson(const QJsonObject &obj)
 {
-    if (!AbstractPortWrapper::FromJson(obj))
-        return false;
-
     if (!obj.contains("portName"))
         return false;
 

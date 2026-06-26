@@ -21,11 +21,13 @@ public:
 
     virtual QString GetTypeName() const = 0;
 
-    PortType GetPortType();
+    virtual bool FromJson(const QJsonObject& obj) = 0;
 
     virtual QJsonObject ToJson() const;
 
-    virtual bool FromJson(const QJsonObject& obj);
+    PortType GetPortType();
+
+    void SetTargetPort(AbstractPortWrapper* targetPort);
 
     static AbstractPortWrapper* CreateFromJson(const QJsonObject& obj,
                                                    QObject* parent,
@@ -38,8 +40,8 @@ private:
 protected:
     void SendToTargetPort(const QByteArray& data);
 
-    AbstractPortWrapper* targetPort;
     qint32 connectionId;
+    AbstractPortWrapper* _targetPort;
 
 protected slots:
     virtual void Accept(const QByteArray& data);

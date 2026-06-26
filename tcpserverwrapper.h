@@ -30,6 +30,8 @@ public:
 
     bool FromJson(const QJsonObject& obj) override;
 
+    QString GetTypeName() const override;
+
     quint16 GetNetworkPort();
 
     QSet<QString> GetAllowedIps();

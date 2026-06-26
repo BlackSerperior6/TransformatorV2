@@ -12,7 +12,7 @@ class TcpClientWrapper : public AbstractPortWrapper
 public:
     TcpClientWrapper(QMap<QString, quint16>& listOfServers, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
 
-    TcpClientWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target);
+    TcpClientWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded);
 
     ~TcpClientWrapper();
 

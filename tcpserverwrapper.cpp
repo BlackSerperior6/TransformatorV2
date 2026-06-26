@@ -7,7 +7,7 @@ TcpServerWrapper::TcpServerWrapper(quint16 networkPort, QSet<QString> allowedIps
 {
     SetAllowedIps(allowedIps);
 
-    if (targetPort == nullptr)
+    if (_targetPort == nullptr)
         emit errorOccurred(connectionId, QString("TCP server must have a target port!"));
 }
 
@@ -17,7 +17,7 @@ TcpServerWrapper::TcpServerWrapper(QSet<QString> allowedIps, QObject *parent, qi
 {
     SetAllowedIps(allowedIps);
 
-    if (targetPort == nullptr)
+    if (_targetPort == nullptr)
         emit errorOccurred(connectionId, QString("TCP server must have a target port!"));
 }
 
@@ -112,6 +112,11 @@ bool TcpServerWrapper::FromJson(const QJsonObject &obj)
 
     for (const auto &i : arrayOfIps)
         _allowedIps.insert(i.toString());
+}
+
+QString TcpServerWrapper::GetTypeName() const
+{
+    return "TcpServerWrapper";
 }
 
 quint16 TcpServerWrapper::GetNetworkPort()

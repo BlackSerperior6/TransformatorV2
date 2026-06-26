@@ -4,13 +4,13 @@
 #include "tcpserverwrapper.h"
 
 AbstractPortWrapper::AbstractPortWrapper(QObject *parent, qint32 conId, PortType portType, AbstractPortWrapper* target) :
-    QObject(parent), _portType(portType), targetPort(target), connectionId(conId)
+    QObject(parent), _portType(portType), connectionId(conId), _targetPort(target)
 {
-    if (targetPort == nullptr)
+    if (_targetPort == nullptr)
         return;
 
     connect(this, &AbstractPortWrapper::dataSend,
-            targetPort, &AbstractPortWrapper::Accept);
+            _targetPort, &AbstractPortWrapper::Accept);
 }
 
 AbstractPortWrapper::~AbstractPortWrapper()
@@ -31,33 +31,21 @@ PortType AbstractPortWrapper::GetPortType()
     return _portType;
 }
 
+void AbstractPortWrapper::SetTargetPort(AbstractPortWrapper* targetPort)
+{
+    _targetPort = targetPort;
+}
+
 QJsonObject AbstractPortWrapper::ToJson() const
 {
     QJsonObject obj;
     obj["type"] = GetTypeName();
-    obj["portType"] = static_cast<int>(_portType);
-    obj["connectionId"] = connectionId;
     return obj;
-}
-
-bool AbstractPortWrapper::FromJson(const QJsonObject& obj)
-{
-    if (!obj.contains("portType"))
-        return false;
-
-    _portType = static_cast<PortType>(obj["portType"].toInt());
-
-    if (!obj.contains("connectionId"))
-        return false;
-
-    connectionId = obj["connectionId"].toInt();
-
-    return true;
 }
 
 void AbstractPortWrapper::SendToTargetPort(const QByteArray &data)
 {
-    if (targetPort == nullptr || data.isEmpty())
+    if (_targetPort == nullptr || data.isEmpty())
         return;
 
     emit dataSend(data);
@@ -70,12 +58,18 @@ AbstractPortWrapper *AbstractPortWrapper::CreateFromJson(const QJsonObject &obj,
 
     QString type = obj["type"].toString();
 
-    if (type == "SerialPortWrapper")
-        return new SerialPortWrapper(obj, parent, conId, target);
-    else if (type == "TcpClientWrapper")
-        return new TcpClientWrapper(obj, parent, conId, target);
-    else if (type == "TcpServerWrapper")
-        return new TcpServerWrapper(obj, parent, conId, target);
+    AbstractPortWrapper* result;
+    bool isSucceeded;
 
-    return nullptr;
+    if (type == "SerialPortWrapper")
+        result = new SerialPortWrapper(obj, parent, conId, target, isSucceeded);
+    else if (type == "TcpClientWrapper")
+        result = new TcpClientWrapper(obj, parent, conId, target, isSucceeded);
+    else if (type == "TcpServerWrapper")
+        result = new TcpServerWrapper(obj, parent, conId, target, isSucceeded);
+
+    if (!isSucceeded)
+        return nullptr;
+
+    return result;
 }
