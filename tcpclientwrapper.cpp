@@ -18,6 +18,12 @@ TcpClientWrapper::TcpClientWrapper(QMap<QString, quint16>& listOfServers, QObjec
     }
 }
 
+TcpClientWrapper::TcpClientWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded) :
+    AbstractPortWrapper(parent, conId, PortType::TcpPort, target)
+{
+    isSucceeded = FromJson(obj);
+}
+
 TcpClientWrapper::~TcpClientWrapper()
 {
     Stop();
@@ -45,6 +51,34 @@ void TcpClientWrapper::Stop()
         connection->disconnectFromHost();
 
     hostConnections.clear();
+}
+
+QJsonObject TcpClientWrapper::ToJson() const
+{
+    QJsonObject obj = AbstractPortWrapper::ToJson();
+
+    QJsonObject serversListObj;
+
+    for (auto it = _listOfServers.begin(); it != _listOfServers.end(); ++it)
+        serversListObj[it.key()] = it.value();
+
+    obj["serverList"] = serversListObj;
+}
+
+bool TcpClientWrapper::FromJson(const QJsonObject &obj)
+{
+    if (!AbstractPortWrapper::FromJson(obj))
+        return false;
+
+    if (!obj.contains("serverList"))
+        return false;
+
+    QJsonObject serversListObj = obj["serverList"].toObject();
+
+    for (auto it = serversListObj.begin(); it != serversListObj.end(); ++it)
+        _listOfServers[it.key()] = it.value().toInt();
+
+    return true;
 }
 
 QMap<QString, quint16> TcpClientWrapper::GetListOfServers()

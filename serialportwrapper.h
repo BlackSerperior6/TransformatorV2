@@ -12,13 +12,23 @@ class SerialPortWrapper : public AbstractPortWrapper
 public:
     SerialPortWrapper(const QString &portName, QObject *parent, int conId, AbstractPortWrapper* target, qint32 baudRate = QSerialPort::Baud115200);
 
+    SerialPortWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded);
+
     ~SerialPortWrapper();
 
     void Start() override;
 
     void Stop() override;
 
+    QJsonObject ToJson() const override;
+
+    bool FromJson(const QJsonObject& obj) override;
+
+    QString GetTypeName() const override;
+
     QString GetPortName();
+
+    quint32 GetBaudRate();
 
 protected slots:
     void Accept(const QByteArray &data) override;

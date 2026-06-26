@@ -7,6 +7,7 @@
 #include <QHostAddress>
 #include <QSet>
 #include <QList>
+#include <QJsonArray>
 
 class TcpServerWrapper : public AbstractPortWrapper
 {
@@ -17,11 +18,17 @@ public:
 
     TcpServerWrapper(QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
 
+    TcpServerWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded);
+
     ~TcpServerWrapper();
 
     void Start() override;
 
     void Stop() override;
+
+    QJsonObject ToJson() const override;
+
+    bool FromJson(const QJsonObject& obj) override;
 
     quint16 GetNetworkPort();
 

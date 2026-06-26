@@ -4,6 +4,7 @@
 #include "porttype.h"
 #include <QObject>
 #include <QDebug>
+#include <QJsonObject>
 
 class AbstractPortWrapper : public QObject
 {
@@ -18,7 +19,18 @@ public:
 
     virtual void Stop() = 0;
 
+    virtual QString GetTypeName() const = 0;
+
     PortType GetPortType();
+
+    virtual QJsonObject ToJson() const;
+
+    virtual bool FromJson(const QJsonObject& obj);
+
+    static AbstractPortWrapper* CreateFromJson(const QJsonObject& obj,
+                                                   QObject* parent,
+                                                   qint32 conId,
+                                                   AbstractPortWrapper* target = nullptr);
 
 private:
     PortType _portType;

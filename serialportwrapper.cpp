@@ -4,6 +4,15 @@ SerialPortWrapper::SerialPortWrapper(const QString &portName, QObject *parent, i
     AbstractPortWrapper(parent, conId, PortType::SerialPort, target), serialPort(new QSerialPort(this)), _portName(portName), _baudRate(baudRate)
 {}
 
+SerialPortWrapper::SerialPortWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded) :
+    AbstractPortWrapper(parent, conId, PortType::SerialPort, target)
+{
+    isSucceeded = FromJson(obj);
+
+    if (isSucceeded)
+        serialPort = new QSerialPort(this);
+}
+
 SerialPortWrapper::~SerialPortWrapper()
 {
     Stop();
@@ -81,7 +90,42 @@ void SerialPortWrapper::Stop()
     serialPort->close();
 }
 
+QJsonObject SerialPortWrapper::ToJson() const
+{
+    QJsonObject obj = AbstractPortWrapper::ToJson();
+    obj["portName"] = _portName;
+    obj["baudRate"] = _baudRate;
+    return obj;
+}
+
+bool SerialPortWrapper::FromJson(const QJsonObject &obj)
+{
+    if (!AbstractPortWrapper::FromJson(obj))
+        return false;
+
+    if (!obj.contains("portName"))
+        return false;
+
+    _portName = obj["portName"].toString();
+
+    if (!obj.contains("baudRate"))
+        return false;
+
+    _baudRate = obj["baudRate"].toInt(QSerialPort::Baud115200);
+    return true;
+}
+
+QString SerialPortWrapper::GetTypeName() const
+{
+    return "SerialPortWrapper";
+}
+
 QString SerialPortWrapper::GetPortName()
 {
     return serialPort->portName();
+}
+
+quint32 SerialPortWrapper::GetBaudRate()
+{
+    return _baudRate;
 }
