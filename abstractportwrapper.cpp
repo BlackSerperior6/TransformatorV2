@@ -31,11 +31,6 @@ PortType AbstractPortWrapper::GetPortType()
     return _portType;
 }
 
-void AbstractPortWrapper::SetTargetPort(AbstractPortWrapper* targetPort)
-{
-    _targetPort = targetPort;
-}
-
 QJsonObject AbstractPortWrapper::ToJson() const
 {
     QJsonObject obj;
