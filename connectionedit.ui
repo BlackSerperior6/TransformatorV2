@@ -34,6 +34,18 @@
      <height>22</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>161</width>
+     <height>22</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>161</width>
+     <height>22</height>
+    </size>
+   </property>
    <property name="editable">
     <bool>false</bool>
    </property>
@@ -89,6 +101,18 @@
      <height>16</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>81</width>
+     <height>16</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>81</width>
+     <height>16</height>
+    </size>
+   </property>
    <property name="text">
     <string>Имя NET порта</string>
    </property>
@@ -101,6 +125,18 @@
      <width>101</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>101</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>101</width>
+     <height>20</height>
+    </size>
    </property>
    <property name="text">
     <string>Список IP адресов</string>
@@ -115,6 +151,18 @@
      <height>41</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>181</width>
+     <height>41</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>181</width>
+     <height>41</height>
+    </size>
+   </property>
    <property name="text">
     <string>Сохранить подключение</string>
    </property>
@@ -128,6 +176,18 @@
      <height>71</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>161</width>
+     <height>71</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>161</width>
+     <height>71</height>
+    </size>
+   </property>
   </widget>
   <widget class="QLabel" name="ComLabel2">
    <property name="geometry">
@@ -137,6 +197,18 @@
      <width>81</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>81</width>
+     <height>16</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>81</width>
+     <height>16</height>
+    </size>
    </property>
    <property name="text">
     <string>Имя COM порта</string>
@@ -151,6 +223,18 @@
      <height>71</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>161</width>
+     <height>71</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>161</width>
+     <height>71</height>
+    </size>
+   </property>
   </widget>
   <widget class="QLabel" name="IPLabel2">
    <property name="geometry">
@@ -160,6 +244,18 @@
      <width>121</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>121</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>121</width>
+     <height>20</height>
+    </size>
    </property>
    <property name="text">
     <string>IP в формате IPv4:Port</string>
@@ -174,6 +270,18 @@
      <height>16</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>81</width>
+     <height>16</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>81</width>
+     <height>16</height>
+    </size>
+   </property>
    <property name="text">
     <string>Имя COM порта</string>
    </property>
@@ -186,6 +294,18 @@
      <width>161</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>161</width>
+     <height>22</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>161</width>
+     <height>22</height>
+    </size>
    </property>
    <item>
     <property name="text">
@@ -210,6 +330,18 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>161</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>161</width>
+     <height>20</height>
+    </size>
+   </property>
   </widget>
   <widget class="QLabel" name="pathLabel">
    <property name="geometry">
@@ -219,6 +351,18 @@
      <width>191</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>191</width>
+     <height>16</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>191</width>
+     <height>16</height>
+    </size>
    </property>
    <property name="text">
     <string>Путь к файлу лога передачи канала:</string>
@@ -233,6 +377,18 @@
      <height>20</height>
     </rect>
    </property>
+   <property name="minimumSize">
+    <size>
+     <width>251</width>
+     <height>20</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>251</width>
+     <height>20</height>
+    </size>
+   </property>
   </widget>
   <widget class="QPushButton" name="viewButton">
    <property name="geometry">
@@ -242,6 +398,18 @@
      <width>31</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>31</width>
+     <height>23</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>31</width>
+     <height>23</height>
+    </size>
    </property>
    <property name="text">
     <string>...</string>

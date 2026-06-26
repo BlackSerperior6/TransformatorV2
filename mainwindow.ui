@@ -35,6 +35,18 @@
       <height>80</height>
      </rect>
     </property>
+    <property name="minimumSize">
+     <size>
+      <width>801</width>
+      <height>80</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>801</width>
+      <height>80</height>
+     </size>
+    </property>
     <property name="title">
      <string>Панель управления</string>
     </property>
@@ -46,6 +58,18 @@
        <width>141</width>
        <height>41</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>141</width>
+       <height>41</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>141</width>
+       <height>41</height>
+      </size>
      </property>
      <property name="text">
       <string>Добавить подключение</string>
@@ -60,6 +84,18 @@
        <height>41</height>
       </rect>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>131</width>
+       <height>41</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>131</width>
+       <height>41</height>
+      </size>
+     </property>
      <property name="text">
       <string>Удалить подключение</string>
      </property>
@@ -72,6 +108,18 @@
        <width>131</width>
        <height>41</height>
       </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>131</width>
+       <height>41</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>131</width>
+       <height>41</height>
+      </size>
      </property>
      <property name="text">
       <string>Очистить логи ошибок</string>
@@ -87,6 +135,18 @@
       <height>371</height>
      </rect>
     </property>
+    <property name="minimumSize">
+     <size>
+      <width>581</width>
+      <height>371</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>581</width>
+      <height>371</height>
+     </size>
+    </property>
    </widget>
    <widget class="QListWidget" name="ErrorLogs">
     <property name="geometry">
@@ -96,6 +156,18 @@
       <width>581</width>
       <height>111</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>581</width>
+      <height>111</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>581</width>
+      <height>111</height>
+     </size>
     </property>
    </widget>
   </widget>
