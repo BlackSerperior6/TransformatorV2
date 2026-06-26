@@ -14,6 +14,11 @@ void PortsConnection::SetPorts(AbstractPortWrapper *first, AbstractPortWrapper *
     secondPort = second;
 }
 
+qint32 PortsConnection::GetConnectionId()
+{
+    return connectionId;
+}
+
 QString PortsConnection::GetFilePath()
 {
     return filePath;
@@ -22,8 +27,6 @@ QString PortsConnection::GetFilePath()
 QJsonObject PortsConnection::ToJson() const
 {
     QJsonObject obj;
-    obj["className"] = "PortsConnection";
-    obj["version"] = 1;
     obj["connectionId"] = connectionId;
     obj["filePath"] = filePath;
 
@@ -44,14 +47,6 @@ bool PortsConnection::FromJson(const QJsonObject &obj)
         return false;
 
     filePath = obj["filePath"].toString();
-
-    if (!obj.contains("version"))
-        return false;
-
-    int version = obj["version"].toInt();
-
-    if (version != 1)
-        return false;
 
     if (!obj.contains("secondPort"))
         return false;

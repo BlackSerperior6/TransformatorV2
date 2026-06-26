@@ -27,6 +27,8 @@ public:
 
     PortType GetPortType();
 
+    qint32 GetConnectionId();
+
     void SetTargetPort(AbstractPortWrapper* targetPort);
 
     static AbstractPortWrapper* CreateFromJson(const QJsonObject& obj,

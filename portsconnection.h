@@ -18,6 +18,8 @@ public:
 
     void SetPorts(AbstractPortWrapper* first, AbstractPortWrapper* second);
 
+    qint32 GetConnectionId();
+
     QString GetFilePath();
 
     QJsonObject ToJson() const;
