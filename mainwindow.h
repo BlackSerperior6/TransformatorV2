@@ -2,7 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QJsonDocument>
 #include <QListWidgetItem>
+
+#include "connectionedit.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,7 +34,18 @@ private slots:
 
     void on_ConnectionsList_currentRowChanged(int currentRow);
 
+    void on_SaveButton_clicked();
+
+    void on_LoadButton_clicked();
+
 private:
+
+    void AddConnectionToList(PortsConnection* connection);
+
+    void UpdateItemWidget(PortsConnection* connection, QListWidgetItem* toUpdate);
+
+    const qint32 CurrentVersion = 1;
+
     int currentConListIndex;
     quint32 connectionCounter;
     Ui::MainWindow *ui;

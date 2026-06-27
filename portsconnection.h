@@ -14,9 +14,17 @@ class PortsConnection : public QWidget
 public:
     PortsConnection(quint32 conId, QString logFilePath);
 
+    PortsConnection(const QJsonObject& obj, bool& isSucceeded);
+
     void SetPorts(AbstractPortWrapper* first, AbstractPortWrapper* second);
 
+    qint32 GetConnectionId();
+
     QString GetFilePath();
+
+    QJsonObject ToJson() const;
+
+    bool FromJson(const QJsonObject& obj);
 
     AbstractPortWrapper* firstPort;
     AbstractPortWrapper* secondPort;

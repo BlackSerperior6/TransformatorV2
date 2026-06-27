@@ -3,15 +3,64 @@
 PortsConnection::PortsConnection(quint32 conId, QString logFilePath) : filePath(logFilePath), connectionId(conId)
 {}
 
+PortsConnection::PortsConnection(const QJsonObject &obj, bool &isSucceeded)
+{
+    isSucceeded = FromJson(obj);
+}
+
 void PortsConnection::SetPorts(AbstractPortWrapper *first, AbstractPortWrapper *second)
 {
     firstPort = first;
     secondPort = second;
 }
 
+qint32 PortsConnection::GetConnectionId()
+{
+    return connectionId;
+}
+
 QString PortsConnection::GetFilePath()
 {
     return filePath;
+}
+
+QJsonObject PortsConnection::ToJson() const
+{
+    QJsonObject obj;
+    obj["connectionId"] = connectionId;
+    obj["filePath"] = filePath;
+
+    obj["firstPort"] = firstPort->ToJson();
+    obj["secondPort"] = secondPort->ToJson();
+
+    return obj;
+}
+
+bool PortsConnection::FromJson(const QJsonObject &obj)
+{
+    if (!obj.contains("connectionId"))
+        return false;
+
+    connectionId = obj["connectionId"].toInt();
+
+    if (!obj.contains("filePath"))
+        return false;
+
+    filePath = obj["filePath"].toString();
+
+    if (!obj.contains("secondPort"))
+        return false;
+
+    QJsonObject secondPortObj = obj["secondPort"].toObject();
+
+    secondPort = AbstractPortWrapper::CreateFromJson(secondPortObj, this, connectionId, nullptr);
+
+    if (!obj.contains("firstPort"))
+        return false;
+
+    QJsonObject firstPortObj = obj["firstPort"].toObject();
+
+    firstPort = AbstractPortWrapper::CreateFromJson(firstPortObj, this, connectionId, secondPort);
 }
 
 void PortsConnection::onDataPassing(const QByteArray& data)

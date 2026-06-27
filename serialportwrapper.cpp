@@ -4,6 +4,15 @@ SerialPortWrapper::SerialPortWrapper(const QString &portName, QObject *parent, i
     AbstractPortWrapper(parent, conId, PortType::SerialPort, target), serialPort(new QSerialPort(this)), _portName(portName), _baudRate(baudRate)
 {}
 
+SerialPortWrapper::SerialPortWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded) :
+    AbstractPortWrapper(parent, conId, PortType::SerialPort, target)
+{
+    isSucceeded = FromJson(obj);
+
+    if (isSucceeded)
+        serialPort = new QSerialPort(this);
+}
+
 SerialPortWrapper::~SerialPortWrapper()
 {
     Stop();
@@ -30,7 +39,7 @@ void SerialPortWrapper::Start()
         emit errorOccurred(connectionId, error);
     }
 
-    if (targetPort == nullptr)
+    if (_targetPort == nullptr)
         return;
 
     connect(serialPort, &QSerialPort::readyRead,
@@ -39,7 +48,7 @@ void SerialPortWrapper::Start()
 
 void SerialPortWrapper::OnReadReady() //With target port
 {
-    if (targetPort == nullptr)
+    if (_targetPort == nullptr)
     {
         QString error = QString("Target port is null, yet OnReadReady event is subscribed!");
         emit errorOccurred(connectionId, error);
@@ -81,7 +90,39 @@ void SerialPortWrapper::Stop()
     serialPort->close();
 }
 
-QString SerialPortWrapper::GetPortName()
+QJsonObject SerialPortWrapper::ToJson() const
+{
+    QJsonObject obj = AbstractPortWrapper::ToJson();
+    obj["portName"] = _portName;
+    obj["baudRate"] = _baudRate;
+    return obj;
+}
+
+bool SerialPortWrapper::FromJson(const QJsonObject &obj)
+{
+    if (!obj.contains("portName"))
+        return false;
+
+    _portName = obj["portName"].toString();
+
+    if (!obj.contains("baudRate"))
+        return false;
+
+    _baudRate = obj["baudRate"].toInt();
+    return true;
+}
+
+QString SerialPortWrapper::GetTypeName() const
+{
+    return "SerialPortWrapper";
+}
+
+QString SerialPortWrapper::GetPortName() const
 {
     return serialPort->portName();
+}
+
+quint32 SerialPortWrapper::GetBaudRate() const
+{
+    return _baudRate;
 }
