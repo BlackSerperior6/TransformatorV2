@@ -61,6 +61,8 @@ bool PortsConnection::FromJson(const QJsonObject &obj)
     QJsonObject firstPortObj = obj["firstPort"].toObject();
 
     firstPort = AbstractPortWrapper::CreateFromJson(firstPortObj, this, connectionId, secondPort);
+
+    return true;
 }
 
 void PortsConnection::onDataPassing(const QByteArray& data)
