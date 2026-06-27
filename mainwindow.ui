@@ -167,11 +167,23 @@
    <widget class="QPushButton" name="SaveButton">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>130</y>
-      <width>151</width>
+      <x>620</x>
+      <y>160</y>
+      <width>141</width>
       <height>61</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>141</width>
+      <height>61</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>141</width>
+      <height>61</height>
+     </size>
     </property>
     <property name="text">
      <string>Сохранить подключения</string>
@@ -180,8 +192,8 @@
    <widget class="QPushButton" name="LoadButton">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>300</y>
+      <x>620</x>
+      <y>310</y>
       <width>141</width>
       <height>61</height>
      </rect>
