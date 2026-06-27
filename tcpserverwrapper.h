@@ -32,9 +32,9 @@ public:
 
     QString GetTypeName() const override;
 
-    quint16 GetNetworkPort();
+    quint16 GetNetworkPort() const;
 
-    QSet<QString> GetAllowedIps();
+    QSet<QString> GetAllowedIps() const;
 
 protected slots:
     void Accept(const QByteArray &data) override;

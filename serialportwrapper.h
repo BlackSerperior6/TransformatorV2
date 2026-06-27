@@ -26,9 +26,9 @@ public:
 
     QString GetTypeName() const override;
 
-    QString GetPortName();
+    QString GetPortName() const;
 
-    quint32 GetBaudRate();
+    quint32 GetBaudRate() const;
 
 protected slots:
     void Accept(const QByteArray &data) override;

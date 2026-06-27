@@ -63,6 +63,8 @@ QJsonObject TcpClientWrapper::ToJson() const
         serversListObj[it.key()] = it.value();
 
     obj["serverList"] = serversListObj;
+
+    return obj;
 }
 
 bool TcpClientWrapper::FromJson(const QJsonObject &obj)
@@ -83,7 +85,7 @@ QString TcpClientWrapper::GetTypeName() const
     return "TcpClientWrapper";
 }
 
-QMap<QString, quint16> TcpClientWrapper::GetListOfServers()
+QMap<QString, quint16> TcpClientWrapper::GetListOfServers() const
 {
     return _listOfServers;
 }

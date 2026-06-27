@@ -108,7 +108,7 @@ bool SerialPortWrapper::FromJson(const QJsonObject &obj)
     if (!obj.contains("baudRate"))
         return false;
 
-    _baudRate = obj["baudRate"].toInt(QSerialPort::Baud115200);
+    _baudRate = obj["baudRate"].toInt();
     return true;
 }
 
@@ -117,12 +117,12 @@ QString SerialPortWrapper::GetTypeName() const
     return "SerialPortWrapper";
 }
 
-QString SerialPortWrapper::GetPortName()
+QString SerialPortWrapper::GetPortName() const
 {
     return serialPort->portName();
 }
 
-quint32 SerialPortWrapper::GetBaudRate()
+quint32 SerialPortWrapper::GetBaudRate() const
 {
     return _baudRate;
 }

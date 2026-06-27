@@ -91,6 +91,8 @@ QJsonObject TcpServerWrapper::ToJson() const
         allowedIpsListObject.append(i);
 
     obj["allowedIps"] = allowedIpsListObject;
+
+    return obj;
 }
 
 bool TcpServerWrapper::FromJson(const QJsonObject &obj)
@@ -112,6 +114,8 @@ bool TcpServerWrapper::FromJson(const QJsonObject &obj)
 
     for (const auto &i : arrayOfIps)
         _allowedIps.insert(i.toString());
+
+    return true;
 }
 
 QString TcpServerWrapper::GetTypeName() const
@@ -119,12 +123,12 @@ QString TcpServerWrapper::GetTypeName() const
     return "TcpServerWrapper";
 }
 
-quint16 TcpServerWrapper::GetNetworkPort()
+quint16 TcpServerWrapper::GetNetworkPort() const
 {
     return server->serverPort();
 }
 
-QSet<QString> TcpServerWrapper::GetAllowedIps()
+QSet<QString> TcpServerWrapper::GetAllowedIps() const
 {
     return _allowedIps;
 }

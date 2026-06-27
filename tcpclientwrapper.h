@@ -26,7 +26,7 @@ public:
 
     QString GetTypeName() const override;
 
-    QMap<QString, quint16> GetListOfServers();
+    QMap<QString, quint16> GetListOfServers() const;
 
 protected slots:
     void Accept(const QByteArray &data) override;

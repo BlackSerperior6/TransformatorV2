@@ -42,6 +42,8 @@ private:
 
     void AddConnectionToList(PortsConnection* connection);
 
+    void UpdateItemWidget(PortsConnection* connection, QListWidgetItem* toUpdate);
+
     const qint32 CurrentVersion = 1;
 
     int currentConListIndex;

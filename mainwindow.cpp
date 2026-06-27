@@ -35,6 +35,12 @@ void MainWindow::on_RemoveConnection_clicked()
     if (currentConListIndex == -1)
         return;
 
+    QListWidgetItem* item = ui->ConnectionsList->item(currentConListIndex);
+
+    PortsConnection* con = (PortsConnection*) ui->ConnectionsList->itemWidget(item);
+
+    delete con;
+
     delete ui->ConnectionsList->takeItem(currentConListIndex);
 
     ui->ConnectionsList->setCurrentRow(-1);
@@ -55,15 +61,7 @@ void MainWindow::on_ConnectionsList_itemDoubleClicked(QListWidgetItem *item)
     win->exec();
 
     if (win->addedAConnection)
-    {
-        connect(connection->firstPort, &AbstractPortWrapper::errorOccurred, this, &MainWindow::WriteErrorsToLog);
-        connect(connection->secondPort, &AbstractPortWrapper::errorOccurred, this, &MainWindow::WriteErrorsToLog);
-        connect(connection, &PortsConnection::errorOccured, this, &MainWindow::WriteErrorsToLog);
-        connect(connection->secondPort, &AbstractPortWrapper::dataReceived, connection, &PortsConnection::onDataPassing);
-
-        connection->secondPort->Start();
-        connection->firstPort->Start();
-    }
+        UpdateItemWidget(win->portsConnection, item);
 }
 
 void MainWindow::WriteErrorsToLog(quint32 connectionId, const QString &message)
@@ -90,7 +88,7 @@ void MainWindow::on_SaveButton_clicked()
         this,
         tr("Файл для сохранения. ВНИМАНИЕ! Предыдущие содрежимое файла будет перезаписано!"),
         QDir::homePath(),
-        tr(".json")
+        tr("JSON Files (*.json);;All Files (*.*)")
     );
 
     QFile file(filePath);
@@ -123,13 +121,11 @@ void MainWindow::on_SaveButton_clicked()
 
 void MainWindow::on_LoadButton_clicked()
 {
-    QList<PortsConnection*> loadedConnections;
-
     QString filePath = QFileDialog::getOpenFileName(
         this,
-        tr("Файл для загрузки. ВНИМАНИЕ! Все текущие сохранения будут переписаны теми, которые сохранены в файле!"),
+        tr("Файл для загрузки. ВНИМАНИЕ! Все текущие подключения будут переписаны теми, которые сохранены в файле!"),
         QDir::homePath(),
-        tr(".json")
+        tr("JSON Files (*.json);;All Files (*.*)")
     );
 
     QFile file(filePath);
@@ -142,6 +138,8 @@ void MainWindow::on_LoadButton_clicked()
 
     QByteArray data = file.readAll();
     file.close();
+
+    QList<PortsConnection*> loadedConnections;
 
     try
     {
@@ -198,12 +196,25 @@ void MainWindow::on_LoadButton_clicked()
             return;
         }
 
+        while (ui->ConnectionsList->count() > 0)
+        {
+            QListWidgetItem* item = ui->ConnectionsList->item(0);
+
+            PortsConnection* con = (PortsConnection*) ui->ConnectionsList->itemWidget(item);
+
+            delete con;
+
+            delete ui->ConnectionsList->takeItem(0);
+        }
+
         ui->ConnectionsList->clear();
 
         for (auto &i : loadedConnections)
             AddConnectionToList(i);
 
         connectionCounter = root["connectionCounter"].toInt();
+
+        QMessageBox::information(this, "Успех!", "Подключения были успешно загруженны!");
     }
     catch (...)
     {
@@ -221,6 +232,21 @@ void MainWindow::AddConnectionToList(PortsConnection* connection)
     connection->setParent(ui->ConnectionsList);
     ui->ConnectionsList->addItem(item);
     ui->ConnectionsList->setItemWidget(item, connection);
+
+    connect(connection->firstPort, &AbstractPortWrapper::errorOccurred, this, &MainWindow::WriteErrorsToLog);
+    connect(connection->secondPort, &AbstractPortWrapper::errorOccurred, this, &MainWindow::WriteErrorsToLog);
+    connect(connection, &PortsConnection::errorOccured, this, &MainWindow::WriteErrorsToLog);
+    connect(connection->secondPort, &AbstractPortWrapper::dataReceived, connection, &PortsConnection::onDataPassing);
+
+    connection->secondPort->Start();
+    connection->firstPort->Start();
+}
+
+void MainWindow::UpdateItemWidget(PortsConnection *connection, QListWidgetItem *toUpdate)
+{
+    connection->setParent(ui->ConnectionsList);
+    ui->ConnectionsList->addItem(toUpdate);
+    ui->ConnectionsList->setItemWidget(toUpdate, connection);
 
     connect(connection->firstPort, &AbstractPortWrapper::errorOccurred, this, &MainWindow::WriteErrorsToLog);
     connect(connection->secondPort, &AbstractPortWrapper::errorOccurred, this, &MainWindow::WriteErrorsToLog);
