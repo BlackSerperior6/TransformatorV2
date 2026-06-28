@@ -68,6 +68,11 @@
      <string>TCP порт</string>
     </property>
    </item>
+   <item>
+    <property name="text">
+     <string>UPD порт</string>
+    </property>
+   </item>
   </widget>
   <widget class="QLineEdit" name="COMEdit2">
    <property name="geometry">
@@ -218,7 +223,7 @@
    <property name="geometry">
     <rect>
      <x>360</x>
-     <y>70</y>
+     <y>100</y>
      <width>161</width>
      <height>71</height>
     </rect>
@@ -240,7 +245,7 @@
    <property name="geometry">
     <rect>
      <x>530</x>
-     <y>90</y>
+     <y>120</y>
      <width>121</width>
      <height>20</height>
     </rect>
@@ -315,6 +320,11 @@
    <item>
     <property name="text">
      <string>TCP порт</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>UDP порт</string>
     </property>
    </item>
   </widget>
@@ -413,6 +423,41 @@
    </property>
    <property name="text">
     <string>...</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="NetLabel2">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>70</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>81</width>
+     <height>16</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>81</width>
+     <height>16</height>
+    </size>
+   </property>
+   <property name="text">
+    <string>Имя NET порта</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="NETPortEdit2">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>70</y>
+     <width>161</width>
+     <height>20</height>
+    </rect>
    </property>
   </widget>
  </widget>

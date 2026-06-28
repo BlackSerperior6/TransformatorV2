@@ -4,7 +4,8 @@
 enum class PortType
 {
     SerialPort,
-    TcpPort
+    TcpPort,
+    UpdPort
 };
 
 #endif // PORTTYPE_H

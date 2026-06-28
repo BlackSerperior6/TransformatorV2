@@ -18,7 +18,9 @@ SOURCES += \
     portsconnection.cpp \
     serialportwrapper.cpp \
     tcpclientwrapper.cpp \
-    tcpserverwrapper.cpp
+    tcpserverwrapper.cpp \
+    updclientwrapper.cpp \
+    updserverwrapper.cpp
 
 HEADERS += \
     abstractportwrapper.h \
@@ -28,7 +30,9 @@ HEADERS += \
     porttype.h \
     serialportwrapper.h \
     tcpclientwrapper.h \
-    tcpserverwrapper.h
+    tcpserverwrapper.h \
+    updclientwrapper.h \
+    updserverwrapper.h
 
 FORMS += \
     connectionedit.ui \

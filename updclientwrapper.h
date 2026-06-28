@@ -1,0 +1,42 @@
+#ifndef UPDCLIENTWRAPPER_H
+#define UPDCLIENTWRAPPER_H
+
+#include "abstractportwrapper.h"
+#include <QUdpSocket>
+
+class UpdClientWrapper : public AbstractPortWrapper
+{
+public:
+    UpdClientWrapper(QMap<QString, quint16>& listOfServers, quint16 localPort, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
+
+    UpdClientWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded);
+
+    ~UpdClientWrapper();
+
+    void Start() override;
+
+    void Stop() override;
+
+    QJsonObject ToJson() const override;
+
+    bool FromJson(const QJsonObject& obj) override;
+
+    QString GetTypeName() const override;
+
+    QMap<QString, quint16> GetListOfServers() const;
+
+protected slots:
+    void Accept(const QByteArray &data) override;
+
+private slots:
+    void onTcpClientError(QAbstractSocket::SocketError socketError);
+
+private:
+    quint16 _localPort;
+
+    QMap<QString, quint16> _listOfServers;
+
+    QUdpSocket* socket;
+};
+
+#endif // UPDCLIENTWRAPPER_H
