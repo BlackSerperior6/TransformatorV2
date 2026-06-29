@@ -1,8 +1,9 @@
-#include "updclientwrapper.h"
+#include "udpclientwrapper.h"
 
-UpdClientWrapper::UpdClientWrapper(QMap<QString, quint16>& listOfServers, quint16 localPort, QObject *parent, qint32 conId,
+UdpClientWrapper::UdpClientWrapper(QMap<QString, quint16>& listOfServers, quint16 localPort, QObject *parent, qint32 conId,
                                    AbstractPortWrapper* target)
-    : AbstractPortWrapper(parent, conId, PortType::TcpPort, target), _localPort(localPort), shouldSetNetworkPortAutomatically(false)
+    : AbstractPortWrapper(parent, conId, PortType::TcpPort, target), _localPort(localPort), shouldSetNetworkPortAutomatically(false),
+      socket(new QUdpSocket(this))
 {
     for (QMap<QString, quint16>::iterator it = listOfServers.begin();
             it != listOfServers.end(); ++it)
@@ -19,8 +20,8 @@ UpdClientWrapper::UpdClientWrapper(QMap<QString, quint16>& listOfServers, quint1
     }
 }
 
-UpdClientWrapper::UpdClientWrapper(QMap<QString, quint16> &listOfServers, QObject *parent, qint32 conId, AbstractPortWrapper *target) :
-    AbstractPortWrapper(parent, conId, PortType::TcpPort, target), shouldSetNetworkPortAutomatically(true)
+UdpClientWrapper::UdpClientWrapper(QMap<QString, quint16> &listOfServers, QObject *parent, qint32 conId, AbstractPortWrapper *target) :
+    AbstractPortWrapper(parent, conId, PortType::TcpPort, target), shouldSetNetworkPortAutomatically(true), socket(new QUdpSocket(this))
 {
     for (QMap<QString, quint16>::iterator it = listOfServers.begin();
             it != listOfServers.end(); ++it)
@@ -37,18 +38,21 @@ UpdClientWrapper::UpdClientWrapper(QMap<QString, quint16> &listOfServers, QObjec
     }
 }
 
-UpdClientWrapper::UpdClientWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded) :
+UdpClientWrapper::UdpClientWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded) :
     AbstractPortWrapper(parent, conId, PortType::TcpPort, target)
 {
     isSucceeded = FromJson(obj);
+
+    if (isSucceeded)
+        socket = new QUdpSocket(this);
 }
 
-UpdClientWrapper::~UpdClientWrapper()
+UdpClientWrapper::~UdpClientWrapper()
 {
     Stop();
 }
 
-void UpdClientWrapper::Start()
+void UdpClientWrapper::Start()
 {
     if (socket->state() == QAbstractSocket::BoundState)
     {
@@ -74,7 +78,7 @@ void UpdClientWrapper::Start()
     }
 }
 
-void UpdClientWrapper::Stop()
+void UdpClientWrapper::Stop()
 {
     if (socket->state() != QAbstractSocket::BoundState)
         return;
@@ -82,7 +86,7 @@ void UpdClientWrapper::Stop()
     socket->close();
 }
 
-QJsonObject UpdClientWrapper::ToJson() const
+QJsonObject UdpClientWrapper::ToJson() const
 {
     QJsonObject obj = AbstractPortWrapper::ToJson();
 
@@ -99,7 +103,7 @@ QJsonObject UpdClientWrapper::ToJson() const
     return obj;
 }
 
-bool UpdClientWrapper::FromJson(const QJsonObject &obj)
+bool UdpClientWrapper::FromJson(const QJsonObject &obj)
 {
     if (!obj.contains("localPort"))
         return false;
@@ -122,22 +126,22 @@ bool UpdClientWrapper::FromJson(const QJsonObject &obj)
     return true;
 }
 
-QString UpdClientWrapper::GetTypeName() const
+QString UdpClientWrapper::GetTypeName() const
 {
     return "UpdClientWrapper";
 }
 
-quint16 UpdClientWrapper::GetLocalPort() const
+quint16 UdpClientWrapper::GetLocalPort() const
 {
     return _localPort;
 }
 
-QMap<QString, quint16> UpdClientWrapper::GetListOfServers() const
+QMap<QString, quint16> UdpClientWrapper::GetListOfServers() const
 {
     return _listOfServers;
 }
 
-void UpdClientWrapper::Accept(const QByteArray &data)
+void UdpClientWrapper::Accept(const QByteArray &data)
 {
     if (socket->state() != QAbstractSocket::BoundState)
     {
@@ -150,14 +154,17 @@ void UpdClientWrapper::Accept(const QByteArray &data)
         qint64 bytesSent = socket->writeDatagram(data, QHostAddress(it.key()), it.value());
 
         if (bytesSent != -1)
+        {
+            AbstractPortWrapper::Accept(data);
             continue;
+        }
 
         emit errorOccurred(connectionId, QString("Failed to send data: %1").arg(socket->errorString()));
         continue;
     }
 }
 
-void UpdClientWrapper::onUpdClientError(QAbstractSocket::SocketError socketError)
+void UdpClientWrapper::onUpdClientError(QAbstractSocket::SocketError socketError)
 {
     QString errorMsg = socket->errorString();
 

@@ -1,6 +1,6 @@
-#include "updserverwrapper.h"
+#include "udpserverwrapper.h"
 
-UpdServerWrapper::UpdServerWrapper(quint16 networkPort, QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target)
+UdpServerWrapper::UdpServerWrapper(quint16 networkPort, QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target)
     : AbstractPortWrapper(parent, conId, PortType::UpdPort, target), _networkPort(networkPort), shouldSetNetworkPortAutomatically(false),
       socket(new QUdpSocket(this))
 {
@@ -10,7 +10,7 @@ UpdServerWrapper::UpdServerWrapper(quint16 networkPort, QSet<QString> allowedIps
         emit errorOccurred(connectionId, QString("UPD server must have a target port!"));
 }
 
-UpdServerWrapper::UpdServerWrapper(QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper *target)
+UdpServerWrapper::UdpServerWrapper(QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper *target)
     : AbstractPortWrapper(parent, conId, PortType::UpdPort, target),
       shouldSetNetworkPortAutomatically(true), socket(new QUdpSocket(this))
 {
@@ -20,7 +20,7 @@ UpdServerWrapper::UpdServerWrapper(QSet<QString> allowedIps, QObject *parent, qi
         emit errorOccurred(connectionId, QString("TCP server must have a target port!"));
 }
 
-UpdServerWrapper::UpdServerWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded) :
+UdpServerWrapper::UdpServerWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded) :
     AbstractPortWrapper(parent, conId, PortType::UpdPort, target)
 {
     isSucceeded = FromJson(obj);
@@ -29,12 +29,12 @@ UpdServerWrapper::UpdServerWrapper(const QJsonObject& obj, QObject* parent, qint
         socket = new QUdpSocket(this);
 }
 
-UpdServerWrapper::~UpdServerWrapper()
+UdpServerWrapper::~UdpServerWrapper()
 {
     Stop();
 }
 
-void UpdServerWrapper::Start()
+void UdpServerWrapper::Start()
 {
     if (socket->state() == QAbstractSocket::BoundState)
     {
@@ -60,12 +60,12 @@ void UpdServerWrapper::Start()
     }
 
     connect(socket, &QUdpSocket::readyRead,
-            this, &UpdServerWrapper::onReadyRead);
+            this, &UdpServerWrapper::onReadyRead);
     connect(socket, QOverload<QAbstractSocket::SocketError>::of(&QUdpSocket::error),
-            this, &UpdServerWrapper::onUpdSocketError);
+            this, &UdpServerWrapper::onUpdSocketError);
 }
 
-void UpdServerWrapper::Stop()
+void UdpServerWrapper::Stop()
 {
     if (socket->state() != QAbstractSocket::BoundState)
         return;
@@ -73,7 +73,7 @@ void UpdServerWrapper::Stop()
     socket->close();
 }
 
-QJsonObject UpdServerWrapper::ToJson() const
+QJsonObject UdpServerWrapper::ToJson() const
 {
     QJsonObject obj = AbstractPortWrapper::ToJson();
 
@@ -90,7 +90,7 @@ QJsonObject UpdServerWrapper::ToJson() const
     return obj;
 }
 
-bool UpdServerWrapper::FromJson(const QJsonObject &obj)
+bool UdpServerWrapper::FromJson(const QJsonObject &obj)
 {
     if (!obj.contains("networkPort"))
         return false;
@@ -113,27 +113,27 @@ bool UpdServerWrapper::FromJson(const QJsonObject &obj)
     return true;
 }
 
-QString UpdServerWrapper::GetTypeName() const
+QString UdpServerWrapper::GetTypeName() const
 {
     return "UpdServerWrapper";
 }
 
-quint16 UpdServerWrapper::GetNetworkPort() const
+quint16 UdpServerWrapper::GetNetworkPort() const
 {
     return _networkPort;
 }
 
-QSet<QString> UpdServerWrapper::GetAllowedIps() const
+QSet<QString> UdpServerWrapper::GetAllowedIps() const
 {
     return _allowedIps;
 }
 
-void UpdServerWrapper::Accept(const QByteArray &data)
+void UdpServerWrapper::Accept(const QByteArray &data)
 {
     emit errorOccurred(connectionId, QString("Accept slot triggered in a server wrapper!"));
 }
 
-void UpdServerWrapper::onReadyRead()
+void UdpServerWrapper::onReadyRead()
 {
     while (socket->hasPendingDatagrams())
     {
@@ -165,14 +165,14 @@ void UpdServerWrapper::onReadyRead()
     }
 }
 
-void UpdServerWrapper::onUpdSocketError(QAbstractSocket::SocketError socketError)
+void UdpServerWrapper::onUpdSocketError(QAbstractSocket::SocketError socketError)
 {
     QString errorMsg = socket->errorString();
 
     emit errorOccurred(connectionId, errorMsg);
 }
 
-void UpdServerWrapper::SetAllowedIps(QSet<QString> &allowedIps)
+void UdpServerWrapper::SetAllowedIps(QSet<QString> &allowedIps)
 {
     _allowedIps.clear();
 
@@ -190,7 +190,7 @@ void UpdServerWrapper::SetAllowedIps(QSet<QString> &allowedIps)
     }
 }
 
-bool UpdServerWrapper::IsIpWhitelisted(const QHostAddress &ip) const
+bool UdpServerWrapper::IsIpWhitelisted(const QHostAddress &ip) const
 {
     if (_allowedIps.isEmpty())
         return true;

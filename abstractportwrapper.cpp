@@ -2,8 +2,8 @@
 #include "serialportwrapper.h"
 #include "tcpclientwrapper.h"
 #include "tcpserverwrapper.h"
-#include "updclientwrapper.h"
-#include "updserverwrapper.h"
+#include "udpclientwrapper.h"
+#include "udpserverwrapper.h"
 
 AbstractPortWrapper::AbstractPortWrapper(QObject *parent, qint32 conId, PortType portType, AbstractPortWrapper* target) :
     QObject(parent), _portType(portType), connectionId(conId), _targetPort(target)
@@ -23,7 +23,10 @@ AbstractPortWrapper::~AbstractPortWrapper()
 void AbstractPortWrapper::Accept(const QByteArray &data)
 {
     if (data.isEmpty())
+    {
+        qDebug() << "Data IS EMPTY!";
         return;
+    }
 
     emit dataReceived(data);
 }
@@ -43,7 +46,10 @@ QJsonObject AbstractPortWrapper::ToJson() const
 void AbstractPortWrapper::SendToTargetPort(const QByteArray &data)
 {
     if (_targetPort == nullptr || data.isEmpty())
+    {
+        qDebug() << "DATA IS EMPTY!";
         return;
+    }
 
     emit dataSend(data);
 }
@@ -65,9 +71,9 @@ AbstractPortWrapper *AbstractPortWrapper::CreateFromJson(const QJsonObject &obj,
     else if (type == "TcpServerWrapper")
         result = new TcpServerWrapper(obj, parent, conId, target, isSucceeded);
     else if (type == "UpdClientWrapper")
-        result = new UpdClientWrapper(obj, parent, conId, target, isSucceeded);
+        result = new UdpClientWrapper(obj, parent, conId, target, isSucceeded);
     else if (type == "UpdServerWrapper")
-        result = new UpdServerWrapper(obj, parent, conId, target, isSucceeded);
+        result = new UdpServerWrapper(obj, parent, conId, target, isSucceeded);
 
     if (!isSucceeded)
         return nullptr;

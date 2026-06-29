@@ -48,6 +48,7 @@ void SerialPortWrapper::Start()
 
 void SerialPortWrapper::OnReadReady() //With target port
 {
+    qDebug() << "Read ready triggered!";
     if (_targetPort == nullptr)
     {
         QString error = QString("Target port is null, yet OnReadReady event is subscribed!");

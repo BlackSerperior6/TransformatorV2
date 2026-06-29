@@ -70,7 +70,7 @@
    </item>
    <item>
     <property name="text">
-     <string>UPD порт</string>
+     <string>UDP порт</string>
     </property>
    </item>
   </widget>

@@ -104,7 +104,10 @@ void TcpClientWrapper::Accept(const QByteArray &data)
             emit errorOccurred(connectionId, QString("Failed to write data to a server: %1").arg(errorMsg));
         }
         else
+        {
+            AbstractPortWrapper::Accept(data);
             connection->flush();
+        }
     }
 }
 

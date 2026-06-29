@@ -6,16 +6,16 @@
 #include <QUdpSocket>
 #include <QJsonArray>
 
-class UpdServerWrapper : public AbstractPortWrapper
+class UdpServerWrapper : public AbstractPortWrapper
 {
 public:
-    UpdServerWrapper(quint16 networkPort, QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
+    UdpServerWrapper(quint16 networkPort, QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
 
-    UpdServerWrapper(QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
+    UdpServerWrapper(QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
 
-    UpdServerWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded);
+    UdpServerWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded);
 
-    ~UpdServerWrapper();
+    ~UdpServerWrapper();
 
     void Start() override;
 

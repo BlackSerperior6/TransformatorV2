@@ -19,8 +19,8 @@ SOURCES += \
     serialportwrapper.cpp \
     tcpclientwrapper.cpp \
     tcpserverwrapper.cpp \
-    updclientwrapper.cpp \
-    updserverwrapper.cpp
+    udpclientwrapper.cpp \
+    udpserverwrapper.cpp
 
 HEADERS += \
     abstractportwrapper.h \
@@ -31,8 +31,8 @@ HEADERS += \
     serialportwrapper.h \
     tcpclientwrapper.h \
     tcpserverwrapper.h \
-    updclientwrapper.h \
-    updserverwrapper.h
+    udpclientwrapper.h \
+    udpserverwrapper.h
 
 FORMS += \
     connectionedit.ui \

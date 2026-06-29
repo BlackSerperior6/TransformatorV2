@@ -4,16 +4,16 @@
 #include "abstractportwrapper.h"
 #include <QUdpSocket>
 
-class UpdClientWrapper : public AbstractPortWrapper
+class UdpClientWrapper : public AbstractPortWrapper
 {
 public:
-    UpdClientWrapper(QMap<QString, quint16>& listOfServers, quint16 localPort, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
+    UdpClientWrapper(QMap<QString, quint16>& listOfServers, quint16 localPort, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
 
-    UpdClientWrapper(QMap<QString, quint16>& listOfServers, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
+    UdpClientWrapper(QMap<QString, quint16>& listOfServers, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
 
-    UpdClientWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded);
+    UdpClientWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded);
 
-    ~UpdClientWrapper();
+    ~UdpClientWrapper();
 
     void Start() override;
 

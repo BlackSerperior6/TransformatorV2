@@ -87,7 +87,7 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
 
         if (isConnectionPresent)
         {
-            UpdServerWrapper* portOne = (UpdServerWrapper*) portsConnection->firstPort;
+            UdpServerWrapper* portOne = (UdpServerWrapper*) portsConnection->firstPort;
 
             QStringList lines;
 
@@ -163,7 +163,7 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
 
         if (isConnectionPresent)
         {
-            UpdClientWrapper* portTwo = (UpdClientWrapper*) portsConnection->secondPort;
+            UdpClientWrapper* portTwo = (UdpClientWrapper*) portsConnection->secondPort;
 
             QMap<QString, quint16> listOfServers = portTwo->GetListOfServers();
 
@@ -222,6 +222,8 @@ void ConnectionEdit::on_ConTypeSelectionSecond_currentIndexChanged(int index)
         case 0: // COM port selected
             ui->IPEdit2->setVisible(false);
             ui->IPLabel2->setVisible(false);
+            ui->NetLabel2->setVisible(false);
+            ui->NETPortEdit2->setVisible(false);
 
             ui->COMEdit2->setVisible(true);
             ui->ComLabel2->setVisible(true);
@@ -287,9 +289,9 @@ PortsConnection* ConnectionEdit::CreateConnection()
             quint16 port = ui->NETPortEdit1->text().toUShort(&isPortValid);
 
             if (!isPortValid)
-                secondport = new UpdClientWrapper(parsedIps, connection, updatedConnectionCounter, nullptr);
+                secondport = new UdpClientWrapper(parsedIps, connection, updatedConnectionCounter, nullptr);
             else
-                secondport = new UpdClientWrapper(parsedIps, port, connection, updatedConnectionCounter, nullptr);
+                secondport = new UdpClientWrapper(parsedIps, port, connection, updatedConnectionCounter, nullptr);
             break;
     }
 
@@ -318,9 +320,9 @@ PortsConnection* ConnectionEdit::CreateConnection()
             parsedServersIps = ParseIpInput(ui->IPEdit1);
 
             if (!isPortValid)
-                firstPort = new UpdServerWrapper(parsedServersIps, connection, updatedConnectionCounter, secondport);
+                firstPort = new UdpServerWrapper(parsedServersIps, connection, updatedConnectionCounter, secondport);
             else
-                firstPort = new UpdServerWrapper(port, parsedServersIps, connection, updatedConnectionCounter, secondport);
+                firstPort = new UdpServerWrapper(port, parsedServersIps, connection, updatedConnectionCounter, secondport);
             break;
     }
 
