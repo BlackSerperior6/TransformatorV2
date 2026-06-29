@@ -73,7 +73,7 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
             ui->IPEdit1->setPlainText(lines.join('\n'));
         }
     }
-    else if (portOneType == PortType::UpdPort)
+    else if (portOneType == PortType::UdpPort)
     {
         ui->COMEdit1->setVisible(false);
         ui->ComLabel1->setVisible(false);
@@ -149,7 +149,7 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
             ui->IPEdit2->setPlainText(lines.join('\n'));
         }
     }
-    else if (portTwoType == PortType::UpdPort)
+    else if (portTwoType == PortType::UdpPort)
     {
         ui->COMEdit2->setVisible(false);
         ui->ComLabel2->setVisible(false);
@@ -286,7 +286,7 @@ PortsConnection* ConnectionEdit::CreateConnection()
         case 2: //Must make a UPD client
             parsedIps = ParseIpInputWithPort(ui->IPEdit2);
             bool isPortValid = false;
-            quint16 port = ui->NETPortEdit1->text().toUShort(&isPortValid);
+            quint16 port = ui->NETPortEdit2->text().toUShort(&isPortValid);
 
             if (!isPortValid)
                 secondport = new UdpClientWrapper(parsedIps, connection, updatedConnectionCounter, nullptr);

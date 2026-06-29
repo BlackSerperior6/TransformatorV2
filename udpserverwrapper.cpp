@@ -1,7 +1,7 @@
 #include "udpserverwrapper.h"
 
 UdpServerWrapper::UdpServerWrapper(quint16 networkPort, QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper* target)
-    : AbstractPortWrapper(parent, conId, PortType::UpdPort, target), _networkPort(networkPort), shouldSetNetworkPortAutomatically(false),
+    : AbstractPortWrapper(parent, conId, PortType::UdpPort, target), _networkPort(networkPort), shouldSetNetworkPortAutomatically(false),
       socket(new QUdpSocket(this))
 {
     SetAllowedIps(allowedIps);
@@ -11,7 +11,7 @@ UdpServerWrapper::UdpServerWrapper(quint16 networkPort, QSet<QString> allowedIps
 }
 
 UdpServerWrapper::UdpServerWrapper(QSet<QString> allowedIps, QObject *parent, qint32 conId, AbstractPortWrapper *target)
-    : AbstractPortWrapper(parent, conId, PortType::UpdPort, target),
+    : AbstractPortWrapper(parent, conId, PortType::UdpPort, target),
       shouldSetNetworkPortAutomatically(true), socket(new QUdpSocket(this))
 {
     SetAllowedIps(allowedIps);
@@ -21,7 +21,7 @@ UdpServerWrapper::UdpServerWrapper(QSet<QString> allowedIps, QObject *parent, qi
 }
 
 UdpServerWrapper::UdpServerWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded) :
-    AbstractPortWrapper(parent, conId, PortType::UpdPort, target)
+    AbstractPortWrapper(parent, conId, PortType::UdpPort, target)
 {
     isSucceeded = FromJson(obj);
 

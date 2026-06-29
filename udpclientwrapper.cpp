@@ -2,7 +2,7 @@
 
 UdpClientWrapper::UdpClientWrapper(QMap<QString, quint16>& listOfServers, quint16 localPort, QObject *parent, qint32 conId,
                                    AbstractPortWrapper* target)
-    : AbstractPortWrapper(parent, conId, PortType::TcpPort, target), _localPort(localPort), shouldSetNetworkPortAutomatically(false),
+    : AbstractPortWrapper(parent, conId, PortType::UdpPort, target), _localPort(localPort), shouldSetNetworkPortAutomatically(false),
       socket(new QUdpSocket(this))
 {
     for (QMap<QString, quint16>::iterator it = listOfServers.begin();
@@ -21,7 +21,7 @@ UdpClientWrapper::UdpClientWrapper(QMap<QString, quint16>& listOfServers, quint1
 }
 
 UdpClientWrapper::UdpClientWrapper(QMap<QString, quint16> &listOfServers, QObject *parent, qint32 conId, AbstractPortWrapper *target) :
-    AbstractPortWrapper(parent, conId, PortType::TcpPort, target), shouldSetNetworkPortAutomatically(true), socket(new QUdpSocket(this))
+    AbstractPortWrapper(parent, conId, PortType::UdpPort, target), shouldSetNetworkPortAutomatically(true), socket(new QUdpSocket(this))
 {
     for (QMap<QString, quint16>::iterator it = listOfServers.begin();
             it != listOfServers.end(); ++it)
@@ -39,7 +39,7 @@ UdpClientWrapper::UdpClientWrapper(QMap<QString, quint16> &listOfServers, QObjec
 }
 
 UdpClientWrapper::UdpClientWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded) :
-    AbstractPortWrapper(parent, conId, PortType::TcpPort, target)
+    AbstractPortWrapper(parent, conId, PortType::UdpPort, target)
 {
     isSucceeded = FromJson(obj);
 
