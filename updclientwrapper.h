@@ -9,6 +9,8 @@ class UpdClientWrapper : public AbstractPortWrapper
 public:
     UpdClientWrapper(QMap<QString, quint16>& listOfServers, quint16 localPort, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
 
+    UpdClientWrapper(QMap<QString, quint16>& listOfServers, QObject *parent, qint32 conId, AbstractPortWrapper* target = nullptr);
+
     UpdClientWrapper(const QJsonObject& obj, QObject* parent, qint32 conId, AbstractPortWrapper* target, bool& isSucceeded);
 
     ~UpdClientWrapper();
@@ -23,16 +25,20 @@ public:
 
     QString GetTypeName() const override;
 
+    quint16 GetLocalPort() const;
+
     QMap<QString, quint16> GetListOfServers() const;
 
 protected slots:
     void Accept(const QByteArray &data) override;
 
 private slots:
-    void onTcpClientError(QAbstractSocket::SocketError socketError);
+    void onUpdClientError(QAbstractSocket::SocketError socketError);
 
 private:
     quint16 _localPort;
+
+    bool shouldSetNetworkPortAutomatically;
 
     QMap<QString, quint16> _listOfServers;
 

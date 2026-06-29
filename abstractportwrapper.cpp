@@ -2,6 +2,8 @@
 #include "serialportwrapper.h"
 #include "tcpclientwrapper.h"
 #include "tcpserverwrapper.h"
+#include "updclientwrapper.h"
+#include "updserverwrapper.h"
 
 AbstractPortWrapper::AbstractPortWrapper(QObject *parent, qint32 conId, PortType portType, AbstractPortWrapper* target) :
     QObject(parent), _portType(portType), connectionId(conId), _targetPort(target)
@@ -62,6 +64,10 @@ AbstractPortWrapper *AbstractPortWrapper::CreateFromJson(const QJsonObject &obj,
         result = new TcpClientWrapper(obj, parent, conId, target, isSucceeded);
     else if (type == "TcpServerWrapper")
         result = new TcpServerWrapper(obj, parent, conId, target, isSucceeded);
+    else if (type == "UpdClientWrapper")
+        result = new UpdClientWrapper(obj, parent, conId, target, isSucceeded);
+    else if (type == "UpdServerWrapper")
+        result = new UpdServerWrapper(obj, parent, conId, target, isSucceeded);
 
     if (!isSucceeded)
         return nullptr;

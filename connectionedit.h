@@ -9,6 +9,8 @@
 #include "serialportwrapper.h"
 #include "tcpserverwrapper.h"
 #include "tcpclientwrapper.h"
+#include "updserverwrapper.h"
+#include "updclientwrapper.h"
 
 namespace Ui {
 class ConnectionEdit;

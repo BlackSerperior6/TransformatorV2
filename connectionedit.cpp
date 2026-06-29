@@ -49,13 +49,13 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
     }
     else if (portOneType == PortType::TcpPort)
     {
-        ui->IPEdit1->setVisible(false);
-        ui->IPLabel1->setVisible(false);
-        ui->NetLabel1->setVisible(false);
-        ui->NETPortEdit1->setVisible(false);
+        ui->COMEdit1->setVisible(false);
+        ui->ComLabel1->setVisible(false);
 
-        ui->COMEdit1->setVisible(true);
-        ui->ComLabel1->setVisible(true);
+        ui->IPEdit1->setVisible(true);
+        ui->IPLabel1->setVisible(true);
+        ui->NetLabel1->setVisible(true);
+        ui->NETPortEdit1->setVisible(true);
 
         ui->ConTypeSelectionFirst->setCurrentIndex(1);
 
@@ -73,11 +73,42 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
             ui->IPEdit1->setPlainText(lines.join('\n'));
         }
     }
+    else if (portOneType == PortType::UpdPort)
+    {
+        ui->COMEdit1->setVisible(false);
+        ui->ComLabel1->setVisible(false);
+
+        ui->IPEdit1->setVisible(true);
+        ui->IPLabel1->setVisible(true);
+        ui->NetLabel1->setVisible(true);
+        ui->NETPortEdit1->setVisible(true);
+
+        ui->ConTypeSelectionFirst->setCurrentIndex(2);
+
+        if (isConnectionPresent)
+        {
+            UpdServerWrapper* portOne = (UpdServerWrapper*) portsConnection->firstPort;
+
+            QStringList lines;
+
+            ui->NETPortEdit1->setText(QString::number(portOne->GetNetworkPort()));
+
+            for (const auto& item : portOne->GetAllowedIps())
+                 lines.append(item);
+
+            ui->IPEdit1->setPlainText(lines.join('\n'));
+
+            ui->NETPortEdit2->setText(QString::number(portOne->GetNetworkPort()));
+        }
+
+    }
 
     if (portTwoType == PortType::SerialPort)
     {
         ui->IPEdit2->setVisible(false);
         ui->IPLabel2->setVisible(false);
+        ui->NetLabel2->setVisible(false);
+        ui->NETPortEdit2->setVisible(false);
 
         ui->COMEdit2->setVisible(true);
         ui->ComLabel2->setVisible(true);
@@ -92,6 +123,8 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
     {
         ui->COMEdit2->setVisible(false);
         ui->ComLabel2->setVisible(false);
+        ui->NetLabel2->setVisible(false);
+        ui->NETPortEdit2->setVisible(false);
 
         ui->IPEdit2->setVisible(true);
         ui->IPLabel2->setVisible(true);
@@ -116,6 +149,38 @@ ConnectionEdit::ConnectionEdit(QWidget *parent,
             ui->IPEdit2->setPlainText(lines.join('\n'));
         }
     }
+    else if (portTwoType == PortType::UpdPort)
+    {
+        ui->COMEdit2->setVisible(false);
+        ui->ComLabel2->setVisible(false);
+
+        ui->IPEdit2->setVisible(true);
+        ui->IPLabel2->setVisible(true);
+        ui->NetLabel2->setVisible(true);
+        ui->NETPortEdit2->setVisible(true);
+
+        ui->ConTypeSelectionSecond->setCurrentIndex(2);
+
+        if (isConnectionPresent)
+        {
+            UpdClientWrapper* portTwo = (UpdClientWrapper*) portsConnection->secondPort;
+
+            QMap<QString, quint16> listOfServers = portTwo->GetListOfServers();
+
+            QStringList lines;
+
+            for (QMap<QString, quint16>::iterator it = listOfServers.begin();
+                    it != listOfServers.end(); ++it)
+            {
+                QString line = QString("%1:%2").arg(it.key()).arg(it.value());
+                lines.append(line);
+            }
+
+            ui->IPEdit2->setPlainText(lines.join('\n'));
+
+            ui->NETPortEdit2->setText(QString::number(portTwo->GetLocalPort()));
+        }
+    }
 }
 
 ConnectionEdit::~ConnectionEdit()
@@ -138,6 +203,7 @@ void ConnectionEdit::on_ConTypeSelectionFirst_currentIndexChanged(int index)
             break;
 
         case 1: // TCP port selected
+        case 2: //UPD port selected
             ui->COMEdit1->setVisible(false);
             ui->ComLabel1->setVisible(false);
 
@@ -164,9 +230,21 @@ void ConnectionEdit::on_ConTypeSelectionSecond_currentIndexChanged(int index)
         case 1: // TCP port selected
             ui->COMEdit2->setVisible(false);
             ui->ComLabel2->setVisible(false);
+            ui->NetLabel2->setVisible(false);
+            ui->NETPortEdit2->setVisible(false);
 
             ui->IPEdit2->setVisible(true);
             ui->IPLabel2->setVisible(true);
+            break;
+
+        case 2: //UPD Port Selected
+            ui->COMEdit2->setVisible(false);
+            ui->ComLabel2->setVisible(false);
+
+            ui->IPEdit2->setVisible(true);
+            ui->IPLabel2->setVisible(true);
+            ui->NetLabel2->setVisible(true);
+            ui->NETPortEdit2->setVisible(true);
             break;
     }
 }
@@ -193,16 +271,31 @@ PortsConnection* ConnectionEdit::CreateConnection()
     AbstractPortWrapper* secondport;
     PortsConnection* connection = new PortsConnection(updatedConnectionCounter, logFilePath);
 
+    QMap<QString, quint16> parsedIps;
     switch (ui->ConTypeSelectionSecond->currentIndex())
     {
         case 0: // Must make a COM port
             secondport = new SerialPortWrapper(ui->COMEdit2->text(), connection, updatedConnectionCounter, nullptr);
             break;
         case 1: // Must make a TCP client
-            QMap<QString, quint16> parsedIps = ParseIpInputWithPort(ui->IPEdit2);
+            parsedIps = ParseIpInputWithPort(ui->IPEdit2);
             secondport = new TcpClientWrapper(parsedIps, connection, updatedConnectionCounter, nullptr);
             break;
+        case 2: //Must make a UPD client
+            parsedIps = ParseIpInputWithPort(ui->IPEdit2);
+            bool isPortValid = false;
+            quint16 port = ui->NETPortEdit1->text().toUShort(&isPortValid);
+
+            if (!isPortValid)
+                secondport = new UpdClientWrapper(parsedIps, connection, updatedConnectionCounter, nullptr);
+            else
+                secondport = new UpdClientWrapper(parsedIps, port, connection, updatedConnectionCounter, nullptr);
+            break;
     }
+
+    bool isPortValid;
+    quint16 port;
+    QSet<QString> parsedServersIps;
 
     switch (ui->ConTypeSelectionFirst->currentIndex())
     {
@@ -210,14 +303,24 @@ PortsConnection* ConnectionEdit::CreateConnection()
             firstPort = new SerialPortWrapper(ui->COMEdit1->text(), connection, updatedConnectionCounter, secondport);
             break;
         case 1: // Must make a TCP server
-            bool isPortValid = false;
-            quint16 port = ui->NETPortEdit1->text().toUShort(&isPortValid);
-            QSet<QString> parsedIps = ParseIpInput(ui->IPEdit1);
+            isPortValid = false;
+            port = ui->NETPortEdit1->text().toUShort(&isPortValid);
+            parsedServersIps = ParseIpInput(ui->IPEdit1);
 
             if (!isPortValid)
-                firstPort = new TcpServerWrapper(parsedIps, connection, updatedConnectionCounter, secondport);
+                firstPort = new TcpServerWrapper(parsedServersIps, connection, updatedConnectionCounter, secondport);
             else
-                firstPort = new TcpServerWrapper(port, parsedIps, connection, updatedConnectionCounter, secondport);
+                firstPort = new TcpServerWrapper(port, parsedServersIps, connection, updatedConnectionCounter, secondport);
+            break;
+        case 2: // Must make a UPD server
+            isPortValid = false;
+            port = ui->NETPortEdit1->text().toUShort(&isPortValid);
+            parsedServersIps = ParseIpInput(ui->IPEdit1);
+
+            if (!isPortValid)
+                firstPort = new UpdServerWrapper(parsedServersIps, connection, updatedConnectionCounter, secondport);
+            else
+                firstPort = new UpdServerWrapper(port, parsedServersIps, connection, updatedConnectionCounter, secondport);
             break;
     }
 
