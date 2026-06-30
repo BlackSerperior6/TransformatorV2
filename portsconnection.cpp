@@ -14,6 +14,12 @@ void PortsConnection::SetPorts(AbstractPortWrapper *first, AbstractPortWrapper *
     secondPort = second;
 }
 
+void PortsConnection::Stop()
+{
+    firstPort->Stop();
+    secondPort->Stop();
+}
+
 qint32 PortsConnection::GetConnectionId()
 {
     return connectionId;

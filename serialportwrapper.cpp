@@ -15,11 +15,14 @@ SerialPortWrapper::SerialPortWrapper(const QJsonObject& obj, QObject* parent, qi
 
 SerialPortWrapper::~SerialPortWrapper()
 {
+    qDebug() << "Begun deleting serial port";
     Stop();
 }
 
 void SerialPortWrapper::Start()
 {
+    qDebug() << "Started Serial port";
+
     if (serialPort->isOpen())
         Stop();
 

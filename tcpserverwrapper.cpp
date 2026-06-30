@@ -32,11 +32,14 @@ TcpServerWrapper::TcpServerWrapper(const QJsonObject& obj, QObject* parent, qint
 
 TcpServerWrapper::~TcpServerWrapper()
 {
+    qDebug() << "Begun deleting TCP port";
     Stop();
 }
 
 void TcpServerWrapper::Start()
 {
+    qDebug() << "Started TCP port";
+
     if (server->isListening())
     {
         emit errorOccurred(connectionId, QString("Server is already listening"));

@@ -253,9 +253,7 @@ void ConnectionEdit::on_ConTypeSelectionSecond_currentIndexChanged(int index)
 
 void ConnectionEdit::on_SaveConnectionButton_clicked()
 {
-    if (portsConnection != nullptr)
-        delete portsConnection;
-    else
+    if (portsConnection == nullptr)
         updatedConnectionCounter++;
 
     addedAConnection = true;
@@ -269,6 +267,8 @@ void ConnectionEdit::on_SaveConnectionButton_clicked()
 
 PortsConnection* ConnectionEdit::CreateConnection()
 {
+    qDebug() << "Creating ports connections";
+
     AbstractPortWrapper* firstPort;
     AbstractPortWrapper* secondport;
     PortsConnection* connection = new PortsConnection(updatedConnectionCounter, logFilePath);

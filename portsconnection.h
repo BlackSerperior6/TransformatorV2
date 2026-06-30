@@ -18,6 +18,8 @@ public:
 
     void SetPorts(AbstractPortWrapper* first, AbstractPortWrapper* second);
 
+    void Stop();
+
     qint32 GetConnectionId();
 
     QString GetFilePath();

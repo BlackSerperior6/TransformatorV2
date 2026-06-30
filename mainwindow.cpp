@@ -28,6 +28,8 @@ void MainWindow::on_CreateConnection_clicked()
         PortsConnection* connection = editWindow->portsConnection;
         AddConnectionToList(connection);
     }
+
+    editWindow->deleteLater();
 }
 
 void MainWindow::on_RemoveConnection_clicked()
@@ -53,6 +55,7 @@ void MainWindow::on_ClearErrorLogs_clicked()
 
 void MainWindow::on_ConnectionsList_itemDoubleClicked(QListWidgetItem *item)
 {
+    qDebug("Double clicked an item");
     PortsConnection *connection =  (PortsConnection*) ui->ConnectionsList->itemWidget(item);
 
     ConnectionEdit *win = new ConnectionEdit(nullptr, connection, connectionCounter);
@@ -61,7 +64,15 @@ void MainWindow::on_ConnectionsList_itemDoubleClicked(QListWidgetItem *item)
     win->exec();
 
     if (win->addedAConnection)
+    {
+        ui->ConnectionsList->removeItemWidget(item);
+
+        delete connection;
+
         UpdateItemWidget(win->portsConnection, item);
+    }
+
+    win->deleteLater();
 }
 
 void MainWindow::WriteErrorsToLog(quint32 connectionId, const QString &message)
@@ -244,8 +255,8 @@ void MainWindow::AddConnectionToList(PortsConnection* connection)
 
 void MainWindow::UpdateItemWidget(PortsConnection *connection, QListWidgetItem *toUpdate)
 {
+    qDebug("Begun Editing");
     connection->setParent(ui->ConnectionsList);
-    ui->ConnectionsList->addItem(toUpdate);
     ui->ConnectionsList->setItemWidget(toUpdate, connection);
 
     connect(connection->firstPort, &AbstractPortWrapper::errorOccurred, this, &MainWindow::WriteErrorsToLog);
@@ -255,4 +266,5 @@ void MainWindow::UpdateItemWidget(PortsConnection *connection, QListWidgetItem *
 
     connection->secondPort->Start();
     connection->firstPort->Start();
+    qDebug("Finished editing");
 }
