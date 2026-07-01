@@ -92,8 +92,6 @@ QMap<QString, quint16> TcpClientWrapper::GetListOfServers() const
 
 void TcpClientWrapper::Accept(const QByteArray &data)
 {
-    AbstractPortWrapper::Accept(data);
-
     for (auto& connection : hostConnections)
     {
         qint64 writtenData = connection->write(data);
